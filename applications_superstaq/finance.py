@@ -55,22 +55,9 @@ def read_json_maxsharpe(json_dict: dict) -> MaxSharpeOutput:
 
 
 class Finance:
-    def __init__(self, client: applications_superstaq._SuperstaQClient):
+    def __init__(self, client: "applications_superstaq._SuperstaQClient"):
         self._client = client
 
-    def get_balance(self, pretty_output: bool = True) -> Union[str, float]:
-        """Get the querying user's account balance in USD.
-        Args:
-            pretty_output: whether to return a pretty string or a float of the balance.
-        Returns:
-            If pretty_output is True, returns the balance as a nicely formatted string ($-prefix,
-                commas on LHS every three digits, and two digits after period). Otherwise, simply
-                returns a float of the balance.
-        """
-        balance = self._client.get_balance()["balance"]
-        if pretty_output:
-            return f"${balance:,.2f}"
-        return balance
 
     def submit_qubo(self, qubo: qv.QUBO, target: str, repetitions: int = 1000) -> np.recarray:
         """Submits the given QUBO to the target backend. The result of the optimization
@@ -168,3 +155,4 @@ class Finance:
         }
         json_dict = self._client.find_max_pseudo_sharpe_ratio(input_dict)
         return read_json_maxsharpe(json_dict)
+
