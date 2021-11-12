@@ -5,6 +5,7 @@ import numpy as np
 import qubovert as qv
 
 import applications_superstaq
+from applications_superstaq import superstaq_client
 
 
 @dataclass
@@ -56,7 +57,7 @@ def read_json_maxsharpe(json_dict: dict) -> MaxSharpeOutput:
 
 
 class Finance:
-    def __init__(self, client: "applications_superstaq.superstaq_client._SuperstaQClient"):
+    def __init__(self, client: superstaq_client._SuperstaQClient):
         self._client = client
 
     def submit_qubo(self, qubo: qv.QUBO, target: str, repetitions: int = 1000) -> np.recarray:

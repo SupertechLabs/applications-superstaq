@@ -4,6 +4,7 @@ from typing import List
 import qubovert as qv
 
 import applications_superstaq
+from applications_superstaq import superstaq_client
 
 
 @dataclass
@@ -59,7 +60,7 @@ def read_json_warehouse(json_dict: dict) -> WarehouseOutput:
 
 
 class Logistics:
-    def __init__(self, client: "applications_superstaq.superstaq_client._SuperstaQClient"):
+    def __init__(self, client: superstaq_client._SuperstaQClient):
         self._client = client
 
     def tsp(self, locs: List[str], solver: str = "anneal") -> TSPOutput:
