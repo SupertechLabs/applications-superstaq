@@ -100,8 +100,8 @@ class _SuperstaQClient:
         repetitions: Optional[int] = None,
         target: Optional[str] = None,
         name: Optional[str] = None,
-        ibmq_token: str = None,
-        ibmq_pulse: bool = None,
+        ibmq_token: Optional[str] = None,
+        ibmq_pulse: Optional[bool] = None,
     ) -> dict:
         """Create a job.
 
@@ -127,6 +127,11 @@ class _SuperstaQClient:
             "backend": actual_target,
             "shots": repetitions,
         }
+        if ibmq_token:
+            json_dict["ibmq_token"] = ibmq_token
+
+        if ibmq_pulse:
+            json_dict["ibmq_pulse"] = ibmq_pulse
 
         json_dict["ibmq_token"] = ibmq_token if ibmq_token
         json_dict["ibmq_pulse"] = ibmq_pulse if ibmq_pulse
