@@ -107,7 +107,7 @@ class Logistics:
         Returns:
             A WarehouseOutput object with the following attributes:
             .warehouse_to_destination: The optimal warehouse-customer pairings in List(Tuple) form.
-            .total_distance: The tour's total distance among all warehouse-customer pairings.
+            .total_distance: The total distance among all warehouse-customer pairings.
             .map_link: A link to google maps that show the tour.
             .open_warehouses: A list of all warehouses that are open.
         """
