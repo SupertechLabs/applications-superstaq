@@ -72,9 +72,7 @@ class Logistics:
         that can pinpoint a location as a Google Maps search.
         It is assumed that the first string in the list is
         the starting and ending point for the TSP tour.
-        The function returns a dictionary containing the route,
-        the indices of the route from the input list, and the total distance
-        of the tour in miles.
+        The function returns a TSPOutput object.
         Args:
             locs: List of strings where each string represents
             a location needed to be visited on tour.
