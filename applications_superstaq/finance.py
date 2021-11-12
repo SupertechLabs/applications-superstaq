@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
+import numpy as np
 import qubovert as qv
 
 import applications_superstaq
@@ -55,9 +56,8 @@ def read_json_maxsharpe(json_dict: dict) -> MaxSharpeOutput:
 
 
 class Finance:
-    def __init__(self, client: "applications_superstaq._SuperstaQClient"):
+    def __init__(self, client: "applications_superstaq.superstaq_client._SuperstaQClient"):
         self._client = client
-
 
     def submit_qubo(self, qubo: qv.QUBO, target: str, repetitions: int = 1000) -> np.recarray:
         """Submits the given QUBO to the target backend. The result of the optimization
@@ -71,7 +71,7 @@ class Finance:
             different solutions, and the number of times each solution was found.
         """
         json_dict = self._client.submit_qubo(qubo, target, repetitions=repetitions)
-        return read_json_qubo_result(json_dict)
+        return applications_superstaq.qubo.read_json_qubo_result(json_dict)
 
     def find_min_vol_portfolio(
         self,
@@ -155,4 +155,3 @@ class Finance:
         }
         json_dict = self._client.find_max_pseudo_sharpe_ratio(input_dict)
         return read_json_maxsharpe(json_dict)
-

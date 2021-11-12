@@ -59,7 +59,7 @@ def read_json_warehouse(json_dict: dict) -> WarehouseOutput:
 
 
 class Logistics:
-    def __init__(self, client: applications_superstaq._SuperstaQClient):
+    def __init__(self, client: "applications_superstaq.superstaq_client._SuperstaQClient"):
         self._client = client
 
     def tsp(self, locs: List[str], solver: str = "anneal") -> TSPOutput:
@@ -87,7 +87,6 @@ class Logistics:
         """
         input_dict = {"locs": locs}
         json_dict = self._client.tsp(input_dict)
-        from applications_superstaq import logistics
 
         return read_json_tsp(json_dict)
 
@@ -119,23 +118,3 @@ class Logistics:
         }
         json_dict = self._client.warehouse(input_dict)
         return read_json_warehouse(json_dict)
-
-    def aqt_upload_configs(self, pulses_file_path: str, variables_file_path: str) -> Dict[str, str]:
-        """Uploads configs for AQT
-        Args:
-            pulses_file_path: The filepath for Pulses.yaml
-            variables_file_path: The filepath for Variables.yaml
-        Returns:
-            A dictionary of of the status of the update (Whether or not it failed)
-        """
-        with open(pulses_file_path) as pulses_file:
-            read_pulses = pulses_file.read()
-
-        with open(variables_file_path) as variables_file:
-            read_variables = variables_file.read()
-
-        json_dict = self._client.aqt_upload_configs(
-            {"pulses": read_pulses, "variables": read_variables}
-        )
-
-        return json_dict

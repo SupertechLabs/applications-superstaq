@@ -1,8 +1,11 @@
-import applications_superstaq
+from typing import Dict, Union
+
+
+from applications_superstaq import superstaq_client
 
 
 class Config:
-    def __init__(self, client: applications_superstaq._SuperstaQClient):
+    def __init__(self, client: superstaq_client._SuperstaQClient):
         self._client = client
 
     def get_balance(self, pretty_output: bool = True) -> Union[str, float]:

@@ -133,9 +133,6 @@ class _SuperstaQClient:
         if ibmq_pulse:
             json_dict["ibmq_pulse"] = ibmq_pulse
 
-        json_dict["ibmq_token"] = ibmq_token if ibmq_token
-        json_dict["ibmq_pulse"] = ibmq_pulse if ibmq_pulse
-
         def request() -> requests.Response:
             return requests.post(
                 f"{self.url}/jobs",
