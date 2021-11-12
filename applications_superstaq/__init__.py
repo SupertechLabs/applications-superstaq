@@ -5,13 +5,13 @@ from applications_superstaq.superstaq_exceptions import (
     SuperstaQNotFoundException,
     SuperstaQUnsuccessfulJobException,
 )
-from . import config
 from . import converters
 from . import finance
 from . import logistics
 from . import qubo
 from . import superstaq_client
 from . import superstaq_exceptions
+from . import user_config
 
 __all__ = [
     "API_URL",
@@ -21,10 +21,10 @@ __all__ = [
     "SuperstaQNotFoundException",
     "SuperstaQUnsuccessfulJobException",
     "converters",
-    "config",
     "finance",
     "logistics",
     "qubo",
     "superstaq_client",
     "superstaq_exceptions",
+    "user_config",
 ]

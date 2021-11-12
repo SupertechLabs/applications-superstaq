@@ -4,7 +4,7 @@ from typing import Dict, Union
 from applications_superstaq import superstaq_client
 
 
-class Config:
+class UserConfig:
     def __init__(self, client: superstaq_client._SuperstaQClient):
         self._client = client
 

@@ -7,7 +7,7 @@ def test_service_get_balance() -> None:
     client = applications_superstaq.superstaq_client._SuperstaQClient(
         remote_host="http://example.com", api_key="key", client_name="applications_superstaq"
     )
-    service = applications_superstaq.config.Config(client)
+    service = applications_superstaq.user_config.UserConfig(client)
     mock_client = mock.MagicMock()
     mock_client.get_balance.return_value = {"balance": 12345.6789}
     service._client = mock_client
@@ -25,7 +25,7 @@ def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
     client = applications_superstaq.superstaq_client._SuperstaQClient(
         remote_host="http://example.com", api_key="key", client_name="applications_superstaq"
     )
-    service = applications_superstaq.config.Config(client)
+    service = applications_superstaq.user_config.UserConfig(client)
 
     with open("/tmp/Pulses.yaml", "w") as pulses_file:
         pulses_file.write("Hello")
