@@ -108,7 +108,7 @@ class Logistics:
             A WarehouseOutput object with the following attributes:
             .warehouse_to_destination: The optimal warehouse-customer pairings in List(Tuple) form.
             .total_distance: The total distance among all warehouse-customer pairings.
-            .map_link: A link to google maps that show the warehouse-customer pairings.
+            .map_link: A link to google maps that shows the warehouse-customer pairings.
             .open_warehouses: A list of all warehouses that are open.
             .qubo: The qubo representation of the warehouse problem
         """
