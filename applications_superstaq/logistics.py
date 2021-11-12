@@ -96,7 +96,7 @@ class Logistics:
     ) -> WarehouseOutput:
         """
         This function solves the warehouse location problem, which is:
-        given a list of customers to be served and  a list of possible warehouse
+        given a list of customers to be served and a list of possible warehouse
         locations, find the optimal k warehouse locations such that the sum of
         the distances to each customer from the nearest facility is minimized.
         Args:
