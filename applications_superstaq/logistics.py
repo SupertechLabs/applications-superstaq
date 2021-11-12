@@ -82,7 +82,7 @@ class Logistics:
             .route: The optimal TSP tour as a list of strings in order.
             .route_list_numbers: The indicies in locs of the optimal tour.
             .total_distance: The tour's total distance.
-            .map_links: A link to google maps that show the tour.
+            .map_link: A link to google maps that shows the tour.
         """
         input_dict = {"locs": locs}
         json_dict = self._client.tsp(input_dict)
@@ -94,7 +94,7 @@ class Logistics:
     ) -> WarehouseOutput:
         """
         This function solves the warehouse location problem, which is:
-        given a list of customers to be served and  a list of possible warehouse
+        given a list of customers to be served and a list of possible warehouse
         locations, find the optimal k warehouse locations such that the sum of
         the distances to each customer from the nearest facility is minimized.
         Args:
@@ -105,8 +105,8 @@ class Logistics:
         Returns:
             A WarehouseOutput object with the following attributes:
             .warehouse_to_destination: The optimal warehouse-customer pairings in List(Tuple) form.
-            .total_distance: The tour's total distance among all warehouse-customer pairings.
-            .map_link: A link to google maps that show the tour.
+            .total_distance: The total distance among all warehouse-customer pairings.
+            .map_link: A link to google maps that show the warehouse-customer pairings.
             .open_warehouses: A list of all warehouses that are open.
         """
         input_dict = {
