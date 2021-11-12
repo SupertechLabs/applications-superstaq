@@ -42,7 +42,8 @@ class WarehouseOutput:
 
 
 def read_json_warehouse(json_dict: dict) -> WarehouseOutput:
-    """Reads out returned JSON from SuperstaQ API's warehouse endpoint.
+    """
+    Reads out returned JSON from SuperstaQ API's warehouse endpoint.
     Args:
         json_dict: a JSON dictionary matching the format returned by /warehouse endpoint
     Returns:
@@ -83,6 +84,7 @@ class Logistics:
             .route_list_numbers: The indicies in locs of the optimal tour.
             .total_distance: The tour's total distance.
             .map_link: A link to google maps that shows the tour.
+            .qubo: The qubo representation of the TSP problem
         """
         input_dict = {"locs": locs}
         json_dict = self._client.tsp(input_dict)
@@ -108,6 +110,7 @@ class Logistics:
             .total_distance: The total distance among all warehouse-customer pairings.
             .map_link: A link to google maps that show the warehouse-customer pairings.
             .open_warehouses: A list of all warehouses that are open.
+            .qubo: The qubo representation of the warehouse problem
         """
         input_dict = {
             "k": k,
