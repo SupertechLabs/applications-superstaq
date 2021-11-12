@@ -84,7 +84,7 @@ class Logistics:
             .route: The optimal TSP tour as a list of strings in order.
             .route_list_numbers: The indicies in locs of the optimal tour.
             .total_distance: The tour's total distance.
-            .map_links: A link to google maps that show the tour.
+            .map_link: A link to google maps that shows the tour.
         """
         input_dict = {"locs": locs}
         json_dict = self._client.tsp(input_dict)
