@@ -13,6 +13,7 @@
 """Client for making requests to SuperstaQ's API."""
 
 import sys
+import textwrap
 import time
 import urllib
 from typing import Any, Callable, cast, Dict, List, Optional, Union
@@ -89,9 +90,7 @@ class _SuperstaQClient:
         assert max_retry_seconds >= 0, "Negative retry not possible without time machine."
 
         self.url = f"{url.scheme}://{url.netloc}/{api_version}"
-        self.verify_https: bool = (
-            f"{applications_superstaq.API_URL}/{self.api_version}" == self.url
-        )
+        self.verify_https: bool = f"{applications_superstaq.API_URL}/{self.api_version}" == self.url
         self.headers = {
             "Authorization": self.api_key,
             "Content-Type": "application/json",
