@@ -29,7 +29,7 @@ EXPECTED_HEADERS = {
 }
 
 
-def test_superstaq_client_str_and_repr():
+def test_superstaq_client_str_and_repr() -> None:
     client = applications_superstaq.superstaq_client._SuperstaQClient(
         client_name="applications-superstaq",
         remote_host="http://example.com",
