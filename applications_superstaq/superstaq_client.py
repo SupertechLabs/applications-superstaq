@@ -90,7 +90,7 @@ class _SuperstaQClient:
 
         self.url = f"{url.scheme}://{url.netloc}/{api_version}"
         self.verify_https: bool = (
-            applications_superstaq.API_URL + "/" + self.api_version == self.url
+            f"{applications_superstaq.API_URL}/{self.api_version}" == self.url
         )
         self.headers = {
             "Authorization": self.api_key,
