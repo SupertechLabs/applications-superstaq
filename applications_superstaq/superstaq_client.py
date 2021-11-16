@@ -397,12 +397,15 @@ class _SuperstaQClient:
         return f"Client with host={self.url} and name={self.client_name}"
 
     def __repr__(self) -> str:
-        return f"""applications_superstaq.superstaq_client._SuperstaQClient(
-        remote_host={self.url!r},
-        api_key={self.api_key!r},
-        client_name={self.client_name!r},
-        default_target={self.default_target!r},
-        api_version={self.api_version!r},
-        max_retry_seconds={self.max_retry_seconds!r},
-        verbose={self.verbose!r},
-    )"""
+        return textwrap.dedent(
+            f"""\
+            applications_superstaq.superstaq_client._SuperstaQClient(
+                remote_host={self.url!r},
+                api_key={self.api_key!r},
+                client_name={self.client_name!r},
+                default_target={self.default_target!r},
+                api_version={self.api_version!r},
+                max_retry_seconds={self.max_retry_seconds!r},
+                verbose={self.verbose!r},
+            )"""
+        )
