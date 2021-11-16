@@ -82,7 +82,7 @@ class _SuperstaQClient:
 
         assert (
             self.api_version in self.SUPPORTED_VERSIONS
-        ), f"Only api versions {self.SUPPORTED_VERSIONS} are accepted but was {self.api_version}"
+        ), f"Only API versions {self.SUPPORTED_VERSIONS} are accepted but got {self.api_version}"
         assert (
             default_target is None or default_target in self.SUPPORTED_TARGETS
         ), f"Target can only be one of {self.SUPPORTED_TARGETS} but was {default_target}."
