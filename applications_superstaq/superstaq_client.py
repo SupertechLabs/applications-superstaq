@@ -198,6 +198,25 @@ class _SuperstaQClient:
 
         return self._make_request(request).json()
 
+    def set_ibm_token(self, token: str) -> dict:
+        """Makes a POST request to SuperstaQ API to set IBMQ token field in database.
+
+        Args:
+            token: IBMQ token string.
+
+        Returns:
+            The json body of the response as a dict.        
+        """
+
+        def request() -? requests.Response:
+            return requests.post(
+                f"{self.url}/ibmq_token/{token}",
+                headers=self.headers,
+                verify-self.verify_https,
+            )
+
+        return self._make_request(request).json()
+
     def aqt_compile(self, json_dict: Dict[str, Union[str, List[str]]]) -> dict:
         """Makes a POST request to SuperstaQ API to compile a list of circuits for Berkeley-AQT."""
 
