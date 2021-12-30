@@ -22,7 +22,7 @@ class UserConfig:
             return f"${balance:,.2f}"
         return balance
 
-    def ibm_set_token(self, token: str) -> Dict[str, str]:
+    def ibmq_set_token(self, token: str) -> Dict[str, str]:
         """Sets IBMQ token field in database.
 
         Args:
@@ -31,7 +31,7 @@ class UserConfig:
         Returns:
             JSON dictionary containing status of update (whether or not it failed).
         """
-        return self._client.ibm_set_token({"ibmq_token": token})
+        return self._client.ibmq_set_token({"ibmq_token": token})
 
     def aqt_upload_configs(self, pulses_file_path: str, variables_file_path: str) -> Dict[str, str]:
         """Uploads configs for AQT

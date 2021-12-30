@@ -17,15 +17,15 @@ def test_service_get_balance() -> None:
 
 
 @mock.patch(
-    "applications_superstaq.superstaq_client._SuperstaQClient.ibm_set_token",
+    "applications_superstaq.superstaq_client._SuperstaQClient.ibmq_set_token",
     return_value={"status": "Your IBMQ account token has been updated"},
 )
-def test_ibm_set_token(mock_ibmq: mock.MagicMock) -> None:
+def test_ibmq_set_token(mock_ibmq: mock.MagicMock) -> None:
     client = applications_superstaq.superstaq_client._SuperstaQClient(
         remote_host="http://example.com", api_key="key", client_name="applications_superstaq"
     )
     service = applications_superstaq.user_config.UserConfig(client)
-    assert service.ibm_set_token("valid token") == {
+    assert service.ibmq_set_token("valid token") == {
         "status": "Your IBMQ account token has been updated"
     }
 

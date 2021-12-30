@@ -339,7 +339,7 @@ def test_superstaq_client_get_balance(mock_get: mock.MagicMock) -> None:
 
 
 @mock.patch("requests.post")
-def test_superstaq_client_ibm_set_token(mock_post: mock.MagicMock) -> None:
+def test_superstaq_client_ibmq_set_token(mock_post: mock.MagicMock) -> None:
     client = applications_superstaq.superstaq_client._SuperstaQClient(
         client_name="applications-superstaq",
         remote_host="http://example.com",
@@ -347,7 +347,7 @@ def test_superstaq_client_ibm_set_token(mock_post: mock.MagicMock) -> None:
         default_target="simulator",
     )
 
-    client.ibm_set_token({"ibmq_token": "token"})
+    client.ibmq_set_token({"ibmq_token": "token"})
 
     expected_json = {"ibmq_token": "token"}
     mock_post.assert_called_with(
