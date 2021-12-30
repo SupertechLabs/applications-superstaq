@@ -198,7 +198,7 @@ class _SuperstaQClient:
 
         return self._make_request(request).json()
 
-    def set_ibm_token(self, ibmq_token: Dict[str, str]) -> dict:
+    def ibm_set_token(self, ibmq_token: Dict[str, str]) -> dict:
         """Makes a POST request to SuperstaQ API to set IBMQ token field in database.
 
         Args:
