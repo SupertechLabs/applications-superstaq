@@ -196,7 +196,7 @@ class _SuperstaQClient:
         return self.post_request("/qscout_compile", json_dict)
 
     def cq_compile(self, json_dict: Dict[str, Union[str, List[str]]]) -> dict:
-        """Makes a POST request to SuperstaQ API to compile a list of circuits for ColdQuanta."""
+        """Makes a POST request to SuperstaQ API to compile a list of circuits for CQ."""
         return self.post_request("/cq_compile", json_dict)
 
     def ibmq_compile(self, json_dict: Dict[str, Union[str, List[str]]]) -> dict:
