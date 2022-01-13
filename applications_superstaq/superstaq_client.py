@@ -98,7 +98,7 @@ class _SuperstaQClient:
             "X-Client-Version": self.api_version,
         }
 
-    def get_request(self, endpoint: str) -> Callable[[], requests.Response]:
+    def get_request(self, endpoint: str) -> dict:
         def request() -> requests.Response:
             return requests.get(
                 f"{self.url}{endpoint}",
@@ -106,11 +106,9 @@ class _SuperstaQClient:
                 verify=self.verify_https,
             )
 
-        return request
+        return self._make_request(request).json()
 
-    def post_request(
-        self, endpoint: str, json_dict: Dict[str, Any]
-    ) -> Callable[[], requests.Response]:
+    def post_request(self, endpoint: str, json_dict: Dict[str, Any]) -> dict:
         def request() -> requests.Response:
             return requests.post(
                 f"{self.url}{endpoint}",
@@ -119,7 +117,7 @@ class _SuperstaQClient:
                 verify=self.verify_https,
             )
 
-        return request
+        return self._make_request(request).json()
 
     def create_job(
         self,
@@ -160,7 +158,7 @@ class _SuperstaQClient:
         if ibmq_pulse:
             json_dict["ibmq_pulse"] = ibmq_pulse
 
-        return self._make_request(self.post_request("/jobs", json_dict)).json()
+        return self.post_request("/jobs", json_dict)
 
     def get_job(self, job_id: str) -> dict:
         """Get the job from the SuperstaQ API.
@@ -175,7 +173,7 @@ class _SuperstaQClient:
             SuperstaQNotFoundException: If a job with the given job_id does not exist.
             SuperstaQException: For other API call failures.
         """
-        return self._make_request(self.get_request(f"/job/{job_id}")).json()
+        return self.get_request(f"/job/{job_id}")
 
     def get_balance(self) -> dict:
         """Get the querying user's account balance in USD.
@@ -183,31 +181,31 @@ class _SuperstaQClient:
         Returns:
             The json body of the response as a dict.
         """
-        return self._make_request(self.get_request("/balance")).json()
+        return self.get_request("/balance")
 
     def get_backends(self) -> dict:
         """Makes a GET request to SuperstaQ API to get a list of available backends."""
-        return self._make_request(self.get_request("/backends")).json()
+        return self.get_request("/backends")
 
     def aqt_compile(self, json_dict: Dict[str, Union[str, List[str]]]) -> dict:
         """Makes a POST request to SuperstaQ API to compile a list of circuits for Berkeley-AQT."""
-        return self._make_request(self.post_request("/aqt_compile", json_dict)).json()
+        return self.post_request("/aqt_compile", json_dict)
 
     def qscout_compile(self, json_dict: Dict[str, Union[str, List[str]]]) -> dict:
         """Makes a POST request to SuperstaQ API to compile a list of circuits for QSCOUT."""
-        return self._make_request(self.post_request("/qscout_compile", json_dict)).json()
+        return self.post_request("/qscout_compile", json_dict)
 
     def cq_compile(self, json_dict: Dict[str, Union[str, List[str]]]) -> dict:
         """Makes a POST request to SuperstaQ API to compile a list of circuits for ColdQuanta."""
-        return self._make_request(self.post_request("/cq_compile", json_dict)).json()
+        return self.post_request("/cq_compile", json_dict)
 
     def ibmq_compile(self, json_dict: Dict[str, Union[str, List[str]]]) -> dict:
         """Makes a POST request to SuperstaQ API to compile a circuits for IBM devices."""
-        return self._make_request(self.post_request("/ibmq_compile", json_dict)).json()
+        return self.post_request("/ibmq_compile", json_dict)
 
     def neutral_atom_compile(self, json_dict: Dict[str, Union[str, List[str]]]) -> dict:
         """Makes a POST request to SuperstaQ API to compile a circuits for neutral atom devices."""
-        return self._make_request(self.post_request("/neutral_atom_compile", json_dict)).json()
+        return self.post_request("/neutral_atom_compile", json_dict)
 
     def submit_qubo(self, qubo: qv.QUBO, target: str, repetitions: int = 1000) -> dict:
         """Makes a POST request to SuperstaQ API to submit a QUBO problem to the given target."""
@@ -216,28 +214,28 @@ class _SuperstaQClient:
             "backend": target,
             "shots": repetitions,
         }
-        return self._make_request(self.post_request("/qubo", json_dict)).json()
+        return self.post_request("/qubo", json_dict)
 
     def find_min_vol_portfolio(self, json_dict: dict) -> dict:
         """Makes a POST request to SuperstaQ API to find a minimum volatility portfolio
         that exceeds a certain specified return."""
-        return self._make_request(self.post_request("/minvol", json_dict)).json()
+        return self.post_request("/minvol", json_dict)
 
     def find_max_pseudo_sharpe_ratio(self, json_dict: dict) -> dict:
         """Makes a POST request to SuperstaQ API to find a max Sharpe ratio portfolio."""
-        return self._make_request(self.post_request("/maxsharpe", json_dict)).json()
+        return self.post_request("/maxsharpe", json_dict)
 
     def tsp(self, json_dict: dict) -> dict:
         """Makes a POST request to SuperstaQ API to find a optimal TSP tour."""
-        return self._make_request(self.post_request("/tsp", json_dict)).json()
+        return self.post_request("/tsp", json_dict)
 
     def warehouse(self, json_dict: dict) -> dict:
         """Makes a POST request to SuperstaQ API to find optimal warehouse assignment."""
-        return self._make_request(self.post_request("/warehouse", json_dict)).json()
+        return self.post_request("/warehouse", json_dict)
 
     def aqt_upload_configs(self, aqt_configs: Dict[str, str]) -> dict:
         """Makes a POST request to SuperstaQ API to upload configurations."""
-        return self._make_request(self.post_request("/aqt_configs", aqt_configs)).json()
+        return self.post_request("/aqt_configs", aqt_configs)
 
     def _target(self, target: Optional[str]) -> str:
         """Returns the target if not None or the default target.
