@@ -138,7 +138,6 @@ def test_supertstaq_client_create_job(mock_post: mock.MagicMock) -> None:
         serialized_circuits={"Hello": "World"},
         repetitions=200,
         target="qpu",
-        ibmq_token="Hi",
         ibmq_pulse=True,
     )
     assert response == {"foo": "bar"}
@@ -147,7 +146,6 @@ def test_supertstaq_client_create_job(mock_post: mock.MagicMock) -> None:
         "Hello": "World",
         "backend": "qpu",
         "shots": 200,
-        "ibmq_token": "Hi",
         "ibmq_pulse": True,
     }
     mock_post.assert_called_with(
