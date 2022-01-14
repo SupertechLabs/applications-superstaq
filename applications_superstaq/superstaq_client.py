@@ -124,20 +124,18 @@ class _SuperstaQClient:
         serialized_circuits: Dict[str, str],
         repetitions: Optional[int] = None,
         target: Optional[str] = None,
-        ibmq_token: Optional[str] = None,
         ibmq_pulse: Optional[bool] = None,
     ) -> dict:
         """Create a job.
 
         Args:
-            ibmq_pulse: Specify whether to run the job on the pulse level of the device
-            ibmq_token: For running on IBM devices
             serialized_circuits: The serialized representation of the circuit to run.
             repetitions: The number of times to repeat the circuit. For simulation the repeated
                 sampling is not done on the server, but is passed as metadata to be recovered
                 from the returned job.
             target: If supplied the target to run on. Supports one of `qpu` or `simulator`. If not
                 set, uses `default_target`.
+            ibmq_pulse: Specify whether to run the job on the pulse level of the device
 
         Returns:
             The json body of the response as a dict. This does not contain populated information
@@ -152,8 +150,6 @@ class _SuperstaQClient:
             "backend": actual_target,
             "shots": repetitions,
         }
-        if ibmq_token:
-            json_dict["ibmq_token"] = ibmq_token
 
         if ibmq_pulse:
             json_dict["ibmq_pulse"] = ibmq_pulse
