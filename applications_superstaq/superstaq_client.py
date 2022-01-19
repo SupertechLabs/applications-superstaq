@@ -135,7 +135,7 @@ class _SuperstaQClient:
                 from the returned job.
             target: If supplied the target to run on. Supports one of `qpu` or `simulator`. If not
                 set, uses `default_target`.
-            ibmq_pulse: Specify whether to run the job on the pulse level of the device
+            ibmq_pulse: Specify whether to run the job using SuperstaQ's pulse-level optimizations
 
         Returns:
             The json body of the response as a dict. This does not contain populated information
