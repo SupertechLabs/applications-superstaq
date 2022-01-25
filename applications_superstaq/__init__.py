@@ -1,7 +1,6 @@
 from applications_superstaq._init_vars import API_URL, API_VERSION
 from applications_superstaq.superstaq_exceptions import (
     SuperstaQException,
-    SuperstaQRequestException,
     SuperstaQModuleNotFoundException,
     SuperstaQNotFoundException,
     SuperstaQUnsuccessfulJobException,
@@ -18,7 +17,6 @@ __all__ = [
     "API_URL",
     "API_VERSION",
     "SuperstaQException",
-    "SuperstaQRequestException",
     "SuperstaQModuleNotFoundException",
     "SuperstaQNotFoundException",
     "SuperstaQUnsuccessfulJobException",

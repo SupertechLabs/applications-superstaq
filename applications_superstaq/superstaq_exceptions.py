@@ -11,18 +11,6 @@ class SuperstaQException(Exception):
     """
 
     def __init__(self, message: str, status_code: int = None):
-        super().__init__(f"{message}")
-        self.message = message
-
-
-class SuperstaQRequestException(Exception):
-    """An exception for errors coming from SuperstaQ's API.
-
-    Attributes:
-        status_code: A http status code, if coming from an http response with a failing status.
-    """
-
-    def __init__(self, message: str, status_code: int = None):
         super().__init__(f"Status code: {status_code}, Message: '{message}'")
         self.status_code = status_code
         self.message = message
