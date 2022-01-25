@@ -280,9 +280,12 @@ class _SuperstaQClient:
         if response.status_code not in self.RETRIABLE_STATUS_CODES:
             message = response.reason
             if response.status_code == 400:
-                message = str(response.text)
+                if "message" in response.json():
+                    message = response.json()["message"]
+                else:
+                    message = str(response.text)
             raise applications_superstaq.SuperstaQException(
-                f"Non-retriable error making request to SuperstaQ API, {message}.",
+                f"Non-retriable error making request to SuperstaQ API, {message}",
                 response.status_code,
             )
 
