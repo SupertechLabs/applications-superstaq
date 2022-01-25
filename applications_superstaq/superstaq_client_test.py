@@ -244,7 +244,7 @@ def test_superstaq_client_create_job_not_retriable(mock_post: mock.MagicMock) ->
         api_key="to_my_heart",
         default_target="simulator",
     )
-    with pytest.raises(applications_superstaq.SuperstaQException, match="Status: 501"):
+    with pytest.raises(applications_superstaq.SuperstaQException, match="Status code: 501"):
         _ = client.create_job({"Hello": "World"})
 
 
@@ -440,7 +440,7 @@ def test_superstaq_client_get_job_not_retriable(mock_get: mock.MagicMock) -> Non
         api_key="to_my_heart",
         default_target="simulator",
     )
-    with pytest.raises(applications_superstaq.SuperstaQException, match="Status: 400"):
+    with pytest.raises(applications_superstaq.SuperstaQException, match="Status code: 400"):
         _ = client.get_job("job_id")
 
 
