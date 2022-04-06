@@ -50,3 +50,23 @@ def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
     assert service.aqt_upload_configs("/tmp/Pulses.yaml", "/tmp/Variables.yaml") == {
         "status": "Your AQT configuration has been updated"
     }
+
+
+@mock.patch(
+    "applications_superstaq.superstaq_client._SuperstaQClient.aqt_get_configs",
+    return_value={"pulses": "Hello", "variables": "World"},
+)
+def test_service_aqt_get_configs(mock_aqt_compile: mock.MagicMock) -> None:
+
+    client = applications_superstaq.superstaq_client._SuperstaQClient(
+        remote_host="http://example.com", api_key="key", client_name="applications_superstaq"
+    )
+    service = applications_superstaq.user_config.UserConfig(client)
+
+    service.aqt_get_configs("/tmp/Pulses.yaml", "/tmp/Variables.yaml")
+
+    with open("/tmp/Pulses.yaml", "r") as file:
+        assert file.read() == "Hello"
+
+    with open("/tmp/Variables.yaml", "r") as file:
+        assert file.read() == "World"

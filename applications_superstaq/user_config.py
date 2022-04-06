@@ -52,3 +52,20 @@ class UserConfig:
         )
 
         return json_dict
+
+    def aqt_get_configs(self, pulses_file_path: str, variables_file_path: str) -> None:
+        """Writes AQT configs from the AQT system onto the given file paths.
+
+        Args:
+            pulses_file_path: where to write the pulse configurations
+            variables_file_path: where to write the variables configurations
+        Returns:
+            None
+        """
+        config_dict = self._client.aqt_get_configs()
+        with open(pulses_file_path, "w") as text_file:
+            text_file.write(config_dict["pulses"])
+
+        with open(variables_file_path, "w") as text_file:
+            text_file.write(config_dict["variables"])
+        return None
