@@ -54,7 +54,10 @@ class UserConfig:
 
         return json_dict
 
-    def aqt_get_configs(self, pulses_file_path: str, variables_file_path: str) -> None:
+    def aqt_get_configs(self) -> Dict:
+        return self._client.aqt_get_configs()
+
+    def aqt_save_configs(self, pulses_file_path: str, variables_file_path: str) -> None:
         """Writes AQT configs from the AQT system onto the given file paths.
 
         Args:
@@ -80,7 +83,7 @@ class UserConfig:
                 f"{variables_file_path} exists " f"Please try a different filename to write to"
             )
 
-        config_dict = self._client.aqt_get_configs()
+        config_dict = self.aqt_get_configs()
         with open(pulses_file_path, "w") as text_file:
             text_file.write(config_dict["pulses"])
 
