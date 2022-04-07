@@ -77,8 +77,7 @@ class UserConfig:
             )
         elif variables_file_exists:
             raise ValueError(
-                f"{variables_file_path} exists as a variables file. "
-                f"Please try a different filename to write to"
+                f"{variables_file_path} exists " f"Please try a different filename to write to"
             )
 
         config_dict = self._client.aqt_get_configs()
