@@ -79,7 +79,7 @@ class UserConfig:
         elif pulses_file_exists and variables_file_exists:
             raise ValueError(
                 f"{pulses_file_path} and {variables_file_path} "
-                f"exists as pulses and variable files. Please try different filenames to write to"
+                f"exist as pulses and variable files. Please try different filenames to write to"
             )
 
         config_dict = self._client.aqt_get_configs()
