@@ -66,7 +66,12 @@ class UserConfig:
         pulses_file_exists = os.path.exists(pulses_file_path)
         variables_file_exists = os.path.exists(variables_file_path)
 
-        if pulses_file_exists and not variables_file_exists:
+        if pulses_file_exists and variables_file_exists:
+            raise ValueError(
+                f"{pulses_file_path} and {variables_file_path} "
+                f"exists as pulses and variable files. Please try different filenames to write to"
+            )
+        elif pulses_file_exists and not variables_file_exists:
             raise ValueError(
                 f"{pulses_file_path} exists as a pulse file. "
                 f"Please try a different filename to write to"
@@ -76,11 +81,7 @@ class UserConfig:
                 f"{variables_file_path} exists as a variables file. "
                 f"Please try a different filename to write to"
             )
-        elif pulses_file_exists and variables_file_exists:
-            raise ValueError(
-                f"{pulses_file_path} and {variables_file_path} "
-                f"exists as pulses and variable files. Please try different filenames to write to"
-            )
+
 
         config_dict = self._client.aqt_get_configs()
         with open(pulses_file_path, "w") as text_file:
