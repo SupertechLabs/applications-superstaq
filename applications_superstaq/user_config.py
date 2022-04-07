@@ -68,7 +68,7 @@ class UserConfig:
 
         if pulses_file_exists and not variables_file_exists:
             raise ValueError(
-                f"{pulses_file_path} exists as a pulse file. "
+                f"{pulses_file_path} exists. "
                 f"Please try a different filename to write to"
             )
         elif not pulses_file_exists and variables_file_exists:
