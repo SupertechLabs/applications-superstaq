@@ -1,8 +1,6 @@
 import os
 import secrets
 from unittest import mock
-import random
-import string
 
 import pytest
 

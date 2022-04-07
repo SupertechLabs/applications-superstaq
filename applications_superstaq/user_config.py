@@ -88,4 +88,3 @@ class UserConfig:
 
         with open(variables_file_path, "w") as text_file:
             text_file.write(config_dict["variables"])
-        return None
