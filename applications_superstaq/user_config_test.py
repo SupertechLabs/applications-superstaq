@@ -1,4 +1,10 @@
+import os
+import secrets
 from unittest import mock
+import random
+import string
+
+import pytest
 
 import applications_superstaq
 
@@ -35,7 +41,6 @@ def test_ibmq_set_token(mock_ibmq: mock.MagicMock) -> None:
     return_value={"status": "Your AQT configuration has been updated"},
 )
 def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
-
     client = applications_superstaq.superstaq_client._SuperstaQClient(
         remote_host="http://example.com", api_key="key", client_name="applications_superstaq"
     )
@@ -57,16 +62,32 @@ def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
     return_value={"pulses": "Hello", "variables": "World"},
 )
 def test_service_aqt_get_configs(mock_aqt_compile: mock.MagicMock) -> None:
-
     client = applications_superstaq.superstaq_client._SuperstaQClient(
         remote_host="http://example.com", api_key="key", client_name="applications_superstaq"
     )
     service = applications_superstaq.user_config.UserConfig(client)
 
-    service.aqt_get_configs("/tmp/Pulses.yaml", "/tmp/Variables.yaml")
+    pulses_file = secrets.token_hex(nbytes=16)
+    variables_file = secrets.token_hex(nbytes=16)
 
-    with open("/tmp/Pulses.yaml", "r") as file:
+    service.aqt_get_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
+
+    with open(f"/tmp/{pulses_file}.yaml", "r") as file:
         assert file.read() == "Hello"
 
-    with open("/tmp/Variables.yaml", "r") as file:
+    with open(f"/tmp/{variables_file}.yaml", "r") as file:
         assert file.read() == "World"
+
+    with pytest.raises(ValueError, match="exists"):
+        service.aqt_get_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
+
+    with pytest.raises(ValueError, match="exists"):
+        os.remove(f"/tmp/{pulses_file}.yaml")
+        service.aqt_get_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
+
+    os.remove(f"/tmp/{variables_file}.yaml")
+
+    with pytest.raises(ValueError, match="exists"):
+        service.aqt_get_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
+        os.remove(f"/tmp/{variables_file}.yaml")
+        service.aqt_get_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
