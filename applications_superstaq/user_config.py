@@ -76,16 +76,18 @@ class UserConfig:
 
         if not overwrite and pulses_file_exists and variables_file_exists:
             raise ValueError(
-                f"{pulses_file_path} and {variables_file_path} exist. "
-                f"Please try different filenames to write to"
+                f"{pulses_file_path} and {variables_file_path} exist. Please try different "
+                "filenames to write to, or pass overwrite=True to overwrite the existing files."
             )
         elif not overwrite and pulses_file_exists:
             raise ValueError(
-                f"{pulses_file_path} exists. " f"Please try a different filename to write to"
+                f"{pulses_file_path} exists. Please try a different filename to write to, "
+                "or pass overwrite=True to overwrite the existing file."
             )
         elif not overwrite and variables_file_exists:
             raise ValueError(
-                f"{variables_file_path} exists " f"Please try a different filename to write to"
+                f"{variables_file_path} exists Please try a different filename to write to, "
+                "or pass overwrite=True to overwrite the existing file."
             )
 
         config_dict = self.aqt_get_configs()
