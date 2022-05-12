@@ -42,10 +42,10 @@ class UserConfig:
         Returns:
             A dictionary of of the status of the update (Whether or not it failed)
         """
-        with open(pulses_file_path) as pulses_file:
+        with open(pulses_file_path, "r") as pulses_file:
             read_pulses = pulses_file.read()
 
-        with open(variables_file_path) as variables_file:
+        with open(variables_file_path, "r") as variables_file:
             read_variables = variables_file.read()
 
         json_dict = self._client.aqt_upload_configs(

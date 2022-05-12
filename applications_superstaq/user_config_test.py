@@ -47,13 +47,12 @@ def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
 
     pulse = tempfile.NamedTemporaryFile('w')
     variable = tempfile.NamedTemporaryFile('w')
-    with pulse as pulses_file:
+    with pulse as pulses_file, variable as variables_file:
         pulses_file.write("Hello")
-        with variable as variables_file:
-            variables_file.write("World")
-            assert service.aqt_upload_configs(pulse.name, variable.name) == {
-                "status": "Your AQT configuration has been updated"
-            }
+        variables_file.write("World")
+        assert service.aqt_upload_configs(pulse.name, variable.name) == {
+            "status": "Your AQT configuration has been updated"
+        }
 
 
 @mock.patch(
