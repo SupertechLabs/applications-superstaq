@@ -1,5 +1,6 @@
 import os
 import secrets
+import tempfile
 from unittest import mock
 
 import pytest
@@ -44,15 +45,15 @@ def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
     )
     service = applications_superstaq.user_config.UserConfig(client)
 
-    with open("/tmp/Pulses.yaml", "w") as pulses_file:
+    pulse = tempfile.NamedTemporaryFile('w')
+    variable = tempfile.NamedTemporaryFile('w')
+    with pulse as pulses_file:
         pulses_file.write("Hello")
-
-    with open("/tmp/Variables.yaml", "w") as variables_file:
-        variables_file.write("World")
-
-    assert service.aqt_upload_configs("/tmp/Pulses.yaml", "/tmp/Variables.yaml") == {
-        "status": "Your AQT configuration has been updated"
-    }
+        with variable as variables_file:
+            variables_file.write("World")
+            assert service.aqt_upload_configs(pulse.name, variable.name) == {
+                "status": "Your AQT configuration has been updated"
+            }
 
 
 @mock.patch(
