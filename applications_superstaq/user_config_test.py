@@ -47,16 +47,16 @@ def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
     tempdir = tempfile.gettempdir()
     pulse = secrets.token_hex(nbytes=16)
     variable = secrets.token_hex(nbytes=16)
-    with open(f"/{tempdir}/{pulse}.yaml", "w") as pulses_file:
+    with open(f"{tempdir}/{pulse}.yaml", "w") as pulses_file:
         pulses_file.write("Hello")
-    with open(f"/{tempdir}/{variable}.yaml", "w") as variables_file:
+    with open(f"{tempdir}/{variable}.yaml", "w") as variables_file:
         variables_file.write("Hello")
 
-    assert service.aqt_upload_configs(
-        f"/{tempdir}/{pulse}.yaml", f"/{tempdir}/{variable}.yaml"
-    ) == {"status": "Your AQT configuration has been updated"}
-    os.remove(f"/{tempdir}/{pulse}.yaml")
-    os.remove(f"/{tempdir}/{variable}.yaml")
+    assert service.aqt_upload_configs(f"{tempdir}/{pulse}.yaml", f"{tempdir}/{variable}.yaml") == {
+        "status": "Your AQT configuration has been updated"
+    }
+    os.remove(f"{tempdir}/{pulse}.yaml")
+    os.remove(f"{tempdir}/{variable}.yaml")
 
 
 @mock.patch(
@@ -73,37 +73,37 @@ def test_service_aqt_get_configs(mock_aqt_compile: mock.MagicMock) -> None:
     variables_file = secrets.token_hex(nbytes=16)
 
     service.aqt_download_configs(
-        f"/{tempdir}/{pulses_file}.yaml", f"/{tempdir}/{variables_file}.yaml"
+        f"{tempdir}/{pulses_file}.yaml", f"{tempdir}/{variables_file}.yaml"
     )
 
-    with open(f"/{tempdir}/{pulses_file}.yaml", "r") as file:
+    with open(f"{tempdir}/{pulses_file}.yaml", "r") as file:
         assert file.read() == "Hello"
 
-    with open(f"/{tempdir}/{variables_file}.yaml", "r") as file:
+    with open(f"{tempdir}/{variables_file}.yaml", "r") as file:
         assert file.read() == "World"
 
     with pytest.raises(ValueError, match="exist"):
         service.aqt_download_configs(
-            f"/{tempdir}/{pulses_file}.yaml", f"/{tempdir}/{variables_file}.yaml"
+            f"{tempdir}/{pulses_file}.yaml", f"{tempdir}/{variables_file}.yaml"
         )
 
     service.aqt_download_configs(
-        f"/{tempdir}/{pulses_file}.yaml", f"/{tempdir}/{variables_file}.yaml", overwrite=True
+        f"{tempdir}/{pulses_file}.yaml", f"{tempdir}/{variables_file}.yaml", overwrite=True
     )
 
     with pytest.raises(ValueError, match="exists"):
-        os.remove(f"/{tempdir}/{pulses_file}.yaml")
+        os.remove(f"{tempdir}/{pulses_file}.yaml")
         service.aqt_download_configs(
-            f"/{tempdir}/{pulses_file}.yaml", f"/{tempdir}/{variables_file}.yaml"
+            f"{tempdir}/{pulses_file}.yaml", f"{tempdir}/{variables_file}.yaml"
         )
 
-    os.remove(f"/{tempdir}/{variables_file}.yaml")
+    os.remove(f"{tempdir}/{variables_file}.yaml")
 
     with pytest.raises(ValueError, match="exists"):
         service.aqt_download_configs(
-            f"/{tempdir}/{pulses_file}.yaml", f"/{tempdir}/{variables_file}.yaml"
+            f"{tempdir}/{pulses_file}.yaml", f"{tempdir}/{variables_file}.yaml"
         )
-        os.remove(f"/{tempdir}/{variables_file}.yaml")
+        os.remove(f"{tempdir}/{variables_file}.yaml")
         service.aqt_download_configs(
-            f"/{tempdir}/{pulses_file}.yaml", f"/{tempdir}/{variables_file}.yaml"
+            f"{tempdir}/{pulses_file}.yaml", f"{tempdir}/{variables_file}.yaml"
         )
