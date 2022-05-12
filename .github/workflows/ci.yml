@@ -100,7 +100,7 @@ jobs:
 
   pytest-win:
     name: Pytest Windows
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
