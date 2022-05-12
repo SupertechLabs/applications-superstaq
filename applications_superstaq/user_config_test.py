@@ -67,31 +67,32 @@ def test_service_aqt_get_configs(mock_aqt_compile: mock.MagicMock) -> None:
     )
     service = applications_superstaq.user_config.UserConfig(client)
 
-    pulses_file = secrets.token_hex(nbytes=16)
-    variables_file = secrets.token_hex(nbytes=16)
+    #pulses_file = secrets.token_hex(nbytes=16)
+    #variables_file = secrets.token_hex(nbytes=16)
 
-    service.aqt_download_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
+    pulses_file = tempfile.NamedTemporaryFile("w+", delete=False)
+    variables_file = tempfile.NamedTemporaryFile("w+", delete=False)
 
-    with open(f"/tmp/{pulses_file}.yaml", "r") as file:
-        assert file.read() == "Hello"
+    service.aqt_download_configs(pulses_file.name, variables_file.name, overwrite=True)
 
-    with open(f"/tmp/{variables_file}.yaml", "r") as file:
-        assert file.read() == "World"
+    with pulses_file as pulse, variables_file as variable:
+        assert pulse.read() == "Hello"
+        assert variable.read() == "World"
 
     with pytest.raises(ValueError, match="exist"):
-        service.aqt_download_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
+        service.aqt_download_configs(pulses_file.name, variables_file.name)
 
     service.aqt_download_configs(
-        f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml", overwrite=True
+        pulses_file.name, variables_file.name, overwrite=True
     )
 
     with pytest.raises(ValueError, match="exists"):
-        os.remove(f"/tmp/{pulses_file}.yaml")
-        service.aqt_download_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
+        os.remove(pulses_file.name)
+        service.aqt_download_configs(pulses_file.name, variables_file.name)
 
-    os.remove(f"/tmp/{variables_file}.yaml")
+    os.remove(variables_file.name)
 
     with pytest.raises(ValueError, match="exists"):
-        service.aqt_download_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
-        os.remove(f"/tmp/{variables_file}.yaml")
-        service.aqt_download_configs(f"/tmp/{pulses_file}.yaml", f"/tmp/{variables_file}.yaml")
+        service.aqt_download_configs(pulses_file.name, variables_file.name)
+        os.remove(variables_file.name)
+        service.aqt_download_configs(pulses_file.name, variables_file.name)
