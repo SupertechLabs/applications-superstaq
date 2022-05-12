@@ -45,8 +45,8 @@ def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
     )
     service = applications_superstaq.user_config.UserConfig(client)
 
-    pulse = tempfile.NamedTemporaryFile("w+")
-    variable = tempfile.NamedTemporaryFile("w+")
+    pulse = tempfile.NamedTemporaryFile("w+", delete=False)
+    variable = tempfile.NamedTemporaryFile("w+", delete=False)
     with pulse as pulses_file, variable as variables_file:
         pulses_file.write("Hello")
         variables_file.write("World")
