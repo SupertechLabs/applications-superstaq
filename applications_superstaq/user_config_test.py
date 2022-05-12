@@ -1,5 +1,4 @@
 import os
-import secrets
 import tempfile
 from unittest import mock
 
@@ -67,9 +66,6 @@ def test_service_aqt_get_configs(mock_aqt_compile: mock.MagicMock) -> None:
     )
     service = applications_superstaq.user_config.UserConfig(client)
 
-    #pulses_file = secrets.token_hex(nbytes=16)
-    #variables_file = secrets.token_hex(nbytes=16)
-
     pulses_file = tempfile.NamedTemporaryFile("w+", delete=False)
     variables_file = tempfile.NamedTemporaryFile("w+", delete=False)
 
@@ -82,9 +78,7 @@ def test_service_aqt_get_configs(mock_aqt_compile: mock.MagicMock) -> None:
     with pytest.raises(ValueError, match="exist"):
         service.aqt_download_configs(pulses_file.name, variables_file.name)
 
-    service.aqt_download_configs(
-        pulses_file.name, variables_file.name, overwrite=True
-    )
+    service.aqt_download_configs(pulses_file.name, variables_file.name, overwrite=True)
 
     with pytest.raises(ValueError, match="exists"):
         os.remove(pulses_file.name)
