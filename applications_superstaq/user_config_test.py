@@ -50,7 +50,7 @@ def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
     with open(f"{tempdir}/{pulse}.yaml", "w") as pulses_file:
         pulses_file.write("Hello")
     with open(f"{tempdir}/{variable}.yaml", "w") as variables_file:
-        variables_file.write("Hello")
+        variables_file.write("World")
 
     assert service.aqt_upload_configs(f"{tempdir}/{pulse}.yaml", f"{tempdir}/{variable}.yaml") == {
         "status": "Your AQT configuration has been updated"
