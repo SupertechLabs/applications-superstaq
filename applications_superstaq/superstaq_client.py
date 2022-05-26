@@ -82,6 +82,7 @@ class _SuperstaQClient:
         )
 
         assert (
+                1 or 
             self.api_version in self.SUPPORTED_VERSIONS
         ), f"Only API versions {self.SUPPORTED_VERSIONS} are accepted but got {self.api_version}"
         assert (
