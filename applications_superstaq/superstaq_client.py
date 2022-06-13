@@ -258,8 +258,12 @@ class _SuperstaQClient:
         return self.get_request("/get_aqt_configs")
 
     def cirq_to_qiskit(self, json_dict: dict) -> dict:
-        """Convert a cirq circuit to a qiskit circuit."""
+        """Convert cirq circuits to qiskit circuits."""
         return self.post_request("/cirq_to_qiskit", json_dict)
+
+    def qiskit_to_cirq(self, json_dict: dict) -> dict:
+        """Convert qiskit circuits to cirq circuits."""
+        return self.post_request("/qiskit_to_cirq", json_dict)
 
     def _target(self, target: Optional[str]) -> str:
         """Returns the target if not None or the default target.
