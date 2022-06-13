@@ -709,3 +709,19 @@ def test_superstaq_client_aqt_get_configs(mock_get: mock.MagicMock) -> None:
     )
 
     assert client.aqt_get_configs() == expected_json
+
+
+@mock.patch("requests.post")
+def test_superstaq_client_cirq_to_qiskit(mock_post: mock.MagicMock) -> None:
+    client = applications_superstaq.superstaq_client._SuperstaQClient(
+        client_name="applications-superstaq",
+        remote_host="http://example.com",
+        api_key="to_my_heart",
+        default_target="simulator",
+    )
+    client.cirq_to_qiskit(
+        {"Hello": "1", "World": "2"},
+    )
+
+    mock_post.assert_called_once()
+    assert mock_post.call_args[0][0] == f"http://example.com/{API_VERSION}/cirq_to_qiskit"

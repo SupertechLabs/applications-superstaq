@@ -257,6 +257,10 @@ class _SuperstaQClient:
         """Writes AQT configs from the AQT system onto the given file paths."""
         return self.get_request("/get_aqt_configs")
 
+    def cirq_to_qiskit(self, json_dict: dict) -> dict:
+        """Convert a cirq circuit to a qiskit circuit."""
+        return self.post_request("/cirq_to_qiskit", json_dict)
+
     def _target(self, target: Optional[str]) -> str:
         """Returns the target if not None or the default target.
 
