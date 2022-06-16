@@ -2,7 +2,7 @@
 
 import sys
 
-from applications_superstaq import check
+import applications_superstaq.check as check
 
 if __name__ == "__main__":
     exit(check.format_.run(*sys.argv[1:]))
