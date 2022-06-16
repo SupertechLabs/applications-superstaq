@@ -5,14 +5,14 @@ import sys
 import textwrap
 from typing import Iterable
 
- import build_docs
- import check_utils
- import coverage_
- import flake8_
- import format_
- import mypy_
- import pylint_
- import requirements
+import build_docs
+import check_utils
+import coverage_
+import flake8_
+import format_
+import mypy_
+import pylint_
+import requirements
 
 
 @check_utils.extract_file_args

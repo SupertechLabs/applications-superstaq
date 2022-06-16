@@ -6,7 +6,7 @@ import subprocess
 import sys
 import textwrap
 
- import check_utils
+import check_utils
 
 
 @check_utils.enable_exit_on_failure
