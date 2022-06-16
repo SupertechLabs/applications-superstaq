@@ -12,9 +12,8 @@ import textwrap
 import urllib.request
 from typing import Dict, Iterable, List, Optional, Union
 
-import pkg_resources
-
 import check_utils
+import pkg_resources
 
 
 @check_utils.enable_exit_on_failure
