@@ -6,7 +6,6 @@ from applications_superstaq.superstaq_exceptions import (
     SuperstaQNotFoundException,
     SuperstaQUnsuccessfulJobException,
 )
-from . import check
 from . import converters
 from . import finance
 from . import logistics
@@ -23,7 +22,6 @@ __all__ = [
     "SuperstaQModuleNotFoundException",
     "SuperstaQNotFoundException",
     "SuperstaQUnsuccessfulJobException",
-    "check",
     "converters",
     "finance",
     "logistics",
