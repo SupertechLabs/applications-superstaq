@@ -6,7 +6,7 @@ import sys
 import textwrap
 from typing import Callable, Iterable, Optional, Union
 
-import check_utils
+from . import check_utils
 
 default_files_to_check = ("*_test.py",)
 default_exclude = ("*_integration_test.py",)

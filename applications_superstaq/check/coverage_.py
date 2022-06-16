@@ -8,7 +8,7 @@ import sys
 import textwrap
 from typing import Iterable, List, Optional, Union
 
-import check_utils
+from . import check_utils
 
 default_files_to_check = ("*.py",)
 default_exclude = ("examples/*", "*_integration_test.py")
