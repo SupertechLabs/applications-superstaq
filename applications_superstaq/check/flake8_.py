@@ -6,7 +6,7 @@ import sys
 import textwrap
 from typing import Iterable
 
-from applications_superstaq.check import check_utils
+ import check_utils
 
 default_files_to_check = ("*.py",)
 

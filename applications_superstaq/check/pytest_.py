@@ -6,7 +6,7 @@ import sys
 import textwrap
 from typing import Callable, Iterable, Optional, Union
 
-from applications_superstaq.check import check_utils
+ import check_utils
 
 default_files_to_check = ("*_test.py",)
 default_exclude = ("*_integration_test.py",)
