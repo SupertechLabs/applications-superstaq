@@ -5,14 +5,14 @@ import sys
 import textwrap
 from typing import Iterable
 
-from . import build_docs
-from . import check_utils
-from . import coverage_
-from . import flake8_
-from . import format_
-from . import mypy_
-from . import pylint_
-from . import requirements
+from applications_superstaq.check import build_docs
+from applications_superstaq.check import check_utils
+from applications_superstaq.check import coverage_
+from applications_superstaq.check import flake8_
+from applications_superstaq.check import format_
+from applications_superstaq.check import mypy_
+from applications_superstaq.check import pylint_
+from applications_superstaq.check import requirements
 
 
 @check_utils.extract_file_args

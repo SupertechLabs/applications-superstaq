@@ -6,7 +6,7 @@ import subprocess
 import sys
 import textwrap
 
-from . import check_utils
+from applications_superstaq.check import check_utils
 
 
 @check_utils.enable_exit_on_failure
