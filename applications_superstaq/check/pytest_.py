@@ -10,7 +10,6 @@ import check_utils
 
 default_files_to_check = ("*_test.py",)
 default_exclude = ("*_integration_test.py",)
-default_integration_exclude = ("dev_tools/*",)
 
 
 @check_utils.enable_exit_on_failure
@@ -21,7 +20,7 @@ def run(
     files: Iterable[str] = (),
     parser: argparse.ArgumentParser = check_utils.get_file_parser(),
     exclude: Optional[Union[str, Iterable[str]]] = default_exclude,
-    integration_exclude: Optional[Union[str, Iterable[str]]] = default_integration_exclude,
+    integration_exclude: Optional[Union[str, Iterable[str]]] = "dev_tools/*",
     integration_setup: Optional[Callable] = None,
 ) -> int:
 
