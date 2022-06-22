@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class ResourceEstimate:
     num_single_qubit_gates: int
