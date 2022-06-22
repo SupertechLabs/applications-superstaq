@@ -6,6 +6,7 @@ from applications_superstaq.superstaq_exceptions import (
     SuperstaQNotFoundException,
     SuperstaQUnsuccessfulJobException,
 )
+from applications_superstaq.resource_estimate import ResourceEstimate
 from . import converters
 from . import finance
 from . import logistics
@@ -26,6 +27,7 @@ __all__ = [
     "finance",
     "logistics",
     "qubo",
+    "ResourceEstimate",
     "superstaq_client",
     "superstaq_exceptions",
     "user_config",
