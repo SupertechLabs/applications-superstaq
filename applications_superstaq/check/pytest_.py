@@ -30,8 +30,9 @@ def run(
         Ignores integration tests unless running in integration mode.
         """
     )
-    exclusive_group = parser.add_mutually_exclusive_group()
 
+    # notebook and integration tests are mutually exclusive
+    exclusive_group = parser.add_mutually_exclusive_group()
     exclusive_group.add_argument(
         "--notebook",
         action="store_true",
@@ -42,12 +43,14 @@ def run(
         action="store_true",
         help="Run pytest on all *integration_test.py files in the repository.",
     )
+
     parser.add_argument(
         "--enable-socket",
         action="store_true",
         help="Force-enable socket (i.e. do not pass --disable-socket to pytest). "
         + "Enabled automatically if running in integration mode.",
     )
+
     parsed_args, unknown_args = parser.parse_known_intermixed_args(args)
     args = tuple(unknown_args)
 
