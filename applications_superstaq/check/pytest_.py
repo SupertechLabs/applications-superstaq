@@ -30,12 +30,14 @@ def run(
         Ignores integration tests unless running in integration mode.
         """
     )
-    parser.add_argument(
+    exclusive_group = parser.add_mutually_exclusive_group()
+
+    exclusive_group.add_argument(
         "--notebook",
         action="store_true",
         help="Run pytest on all *.ipynb files in the repository.",
     )
-    parser.add_argument(
+    exclusive_group.add_argument(
         "--integration",
         action="store_true",
         help="Run pytest on all *integration_test.py files in the repository.",
@@ -49,6 +51,10 @@ def run(
     parsed_args, unknown_args = parser.parse_known_intermixed_args(args)
     args = tuple(unknown_args)
 
+    if parsed_args.notebook:
+        args += ("--nbmake",)
+        files = check_utils.get_tracked_files("**/*.ipynb", exclude=exclude)
+
     if parsed_args.integration:
         if integration_setup:
             integration_setup()
@@ -61,17 +67,6 @@ def run(
 
     elif not parsed_args.enable_socket:
         args += ("--disable-socket",)
-
-    if parsed_args.notebook:
-        args += ("--nbmake",)
-        ipynb_files_to_check = (
-            "examples/cq_compiler_demo.ipynb",
-            "docs/source/notebooks/write_once_target_all.ipynb",
-            "docs/source/notebooks/pulse_optimized_programs.ipynb",
-            "examples/aqt.ipynb",
-            "docs/source/notebooks/logistics_tsp_solver.ipynb",
-        )
-        files = check_utils.get_tracked_files(*ipynb_files_to_check, exclude=exclude)
 
     if not files:
         files = check_utils.get_tracked_files(*default_files_to_check, exclude=exclude)
