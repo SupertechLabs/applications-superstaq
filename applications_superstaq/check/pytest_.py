@@ -30,7 +30,11 @@ def run(
         Ignores integration tests unless running in integration mode.
         """
     )
-
+    parser.add_argument(
+        "--notebook",
+        action="store_true",
+        help="Run pytest on all *.ipynb files in the repository.",
+    )
     parser.add_argument(
         "--integration",
         action="store_true",
@@ -57,6 +61,17 @@ def run(
 
     elif not parsed_args.enable_socket:
         args += ("--disable-socket",)
+
+    if parsed_args.notebook:
+        args += ("--nbmake",)
+        ipynb_files_to_check = (
+            "examples/cq_compiler_demo.ipynb",
+            "docs/source/notebooks/write_once_target_all.ipynb",
+            "docs/source/notebooks/pulse_optimized_programs.ipynb",
+            "examples/aqt.ipynb",
+            "docs/source/notebooks/logistics_tsp_solver.ipynb",
+        )
+        files = check_utils.get_tracked_files(*ipynb_files_to_check, exclude=exclude)
 
     if not files:
         files = check_utils.get_tracked_files(*default_files_to_check, exclude=exclude)
