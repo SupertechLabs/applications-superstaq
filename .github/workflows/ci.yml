@@ -26,7 +26,7 @@ jobs:
           if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
       - name: Format
         run: |
-          applications_superstaq/check/format_.py
+          check/format_.py
 
   lint:
     name: Lint check
@@ -44,7 +44,7 @@ jobs:
           if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
       - name: Pylint
         run: |
-          applications_superstaq/check/pylint_.py
+          check/pylint_.py
 
   flake8:
     name: Flake8 check
@@ -62,7 +62,7 @@ jobs:
           if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
       - name: Flake8
         run: |
-          applications_superstaq/check/flake8_.py
+          check/flake8_.py
 
   mypy:
     name: Type check
@@ -80,7 +80,7 @@ jobs:
           if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
       - name: Type check
         run: |
-          applications_superstaq/check/mypy_.py
+          check/mypy_.py
 
   pytest:
     name: Pytest Ubuntu
@@ -98,7 +98,7 @@ jobs:
           if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
       - name: Pytest check
         run: |
-          applications_superstaq/check/pytest_.py
+          check/pytest_.py
 
   pytest-mac:
     name: Pytest macOS
@@ -116,7 +116,7 @@ jobs:
           if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
       - name: Pytest-mac check
         run: |
-          applications_superstaq/check/pytest_.py
+          check/pytest_.py
 
   pytest-win:
     name: Pytest Windows
@@ -134,7 +134,7 @@ jobs:
           if (Test-Path "dev-requirements.txt") {pip install -r dev-requirements.txt}
       - name: Pytest-win check
         run: |
-          applications_superstaq/check/pytest_.py
+          check/pytest_.py
         shell: bash
 
   coverage:
@@ -153,4 +153,4 @@ jobs:
           if [ -f dev-requirements.txt ]; then pip install -r dev-requirements.txt; fi
       - name: Coverage check
         run: |
-          applications_superstaq/check/coverage_.py
+          check/coverage_.py
