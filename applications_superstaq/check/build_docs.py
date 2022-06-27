@@ -21,8 +21,8 @@ def run(
     )
     parser.parse_args(args)
 
-    if os.path.isdir("docs"):
-        docs_dir = os.path.join(check_utils.root_dir, "docs")
+    docs_dir = os.path.join(check_utils.root_dir, "docs")
+    if os.path.isdir(docs_dir):
         return subprocess.call(["make", *args, "html"], cwd=docs_dir)
     else:
         print(check_utils.warning("No docs to build."))
