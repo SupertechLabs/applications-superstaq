@@ -14,10 +14,7 @@ from typing import Dict, Iterable, List, Optional, Union
 
 import pkg_resources
 
-if __package__ is None:
-    import check_utils
-else:
-    from applications_superstaq.check import check_utils
+from applications_superstaq.check import check_utils
 
 
 @check_utils.enable_exit_on_failure

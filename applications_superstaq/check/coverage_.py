@@ -8,10 +8,7 @@ import sys
 import textwrap
 from typing import Iterable, List, Optional, Union
 
-if __package__ is None:
-    import check_utils
-else:
-    from applications_superstaq.check import check_utils
+from applications_superstaq.check import check_utils
 
 default_files_to_check = ("*.py",)
 default_exclude = ("examples/*", "*_integration_test.py")
