@@ -20,6 +20,10 @@ class ResourceEstimate:
             Nothing
         """
         if json_data is not None:
+            assert "num_single_qubit_gates" in json_data
+            assert "num_two_qubit_gates" in json_data
+            assert "depth" in json_data
+
             self.num_single_qubit_gates = json_data["num_single_qubit_gates"]
             self.num_two_qubit_gates = json_data["num_two_qubit_gates"]
             self.depth = json_data["depth"]
