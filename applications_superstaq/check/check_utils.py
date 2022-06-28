@@ -125,15 +125,8 @@ def get_changed_files(
         else:
             print(f"Comparing against revision '{base_revision}' (merge base '{common_ancestor}')")
 
-    # identify changed files to check, excluding deleted files
-    changed_file_status_names = [
-        status_name.split()
-        for status_name in _check_output(
-            "git", "diff", "--name-status", common_ancestor
-        ).splitlines()
-    ]
-    existing_changed_files = [name for status, name in changed_file_status_names if status != "D"]
-    changed_and_included_files = list(filter(inclusion_filter(exclude), existing_changed_files))
+    changed_files = _check_output("git", "diff", "--name-only", common_ancestor).splitlines()
+    changed_and_included_files = list(filter(inclusion_filter(exclude), changed_files))
     files_to_examine = [
         file for file in get_tracked_files(*match_patterns) if file in changed_and_included_files
     ]
