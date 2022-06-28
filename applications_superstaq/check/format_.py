@@ -7,7 +7,10 @@ import sys
 import textwrap
 from typing import Iterable
 
-from applications_superstaq.check import check_utils
+if __package__ is None:
+    import check_utils
+else:
+    from applications_superstaq.check import check_utils
 
 default_files_to_check = ("*.py", "*.ipynb")
 
