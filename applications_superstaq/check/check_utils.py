@@ -235,12 +235,13 @@ def enable_incremental(
                 args = tuple(unknown_args)
                 revisions = inc_parsed_args.revisions
 
-            # add files that have changed since the most recent common ancestor of the revisions
-            changed_files = get_changed_files(
-                match_patterns, revisions, silent=silent, exclude=exclude
-            )
-            if changed_files:
-                files = list(files) + changed_files if files else changed_files
+            if revisions is not None:
+                # add files that have changed since the most recent common ancestor of the revisions
+                changed_files = get_changed_files(
+                    match_patterns, revisions, silent=silent, exclude=exclude
+                )
+                if changed_files:
+                    files = list(files) + changed_files if files else changed_files
 
             return func(*args, files=files, **kwargs)
 

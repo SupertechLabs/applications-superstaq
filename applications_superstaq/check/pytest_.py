@@ -66,7 +66,7 @@ def run(
             "*_integration_test.py",
             exclude=integration_exclude,
         )
-        files = list(files) + list(files_to_add)
+        files = list(files) + files_to_add if files else files_to_add
 
     elif not parsed_args.enable_socket:
         args += ("--disable-socket",)
