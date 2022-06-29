@@ -235,11 +235,11 @@ def enable_incremental(
                 args = tuple(unknown_args)
                 revisions = inc_parsed_args.revisions
 
-            if revisions is not None:
-                # add files that have changed since the most recent common ancestor of the revisions
-                changed_files = get_changed_files(
-                    match_patterns, revisions, silent=silent, exclude=exclude
-                )
+            # add files that have changed since the most recent common ancestor of the revisions
+            changed_files = get_changed_files(
+                match_patterns, revisions, silent=silent, exclude=exclude
+            )
+            if changed_files:
                 files = list(files) + changed_files if files else changed_files
 
             return func(*args, files=files, **kwargs)
@@ -275,7 +275,8 @@ def extract_file_args(func: Callable[..., int]) -> Callable[..., int]:
             else:
                 othr_args.append(arg)
 
-        files = list(files) + file_args if files else file_args
+        if file_args:
+            files = list(files) + file_args if files else file_args
         return func(*othr_args, files=files, **kwargs)
 
     return func_with_files
