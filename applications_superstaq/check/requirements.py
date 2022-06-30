@@ -163,7 +163,8 @@ def _pin_upstream_packages(requirements: List[str], upstream_match: str, silent:
 
 @functools.lru_cache
 def _get_latest_version(package: str) -> str:
-    pypi_url = f"https://pypi.org/pypi/{package}/json"
+    base_package = package if "[" not in package else package[:package.index("[")]
+    pypi_url = f"https://pypi.org/pypi/{base_package}/json"
     return json.loads(urllib.request.urlopen(pypi_url).read().decode())["info"]["version"]
 
 
