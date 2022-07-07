@@ -61,12 +61,7 @@ def run(
     files = filter(check_utils.inclusion_filter(exclude), files)
 
     # check that we can connect to PyPI
-    try:
-        urllib.request.urlopen("https://pypi.org/", timeout=1)
-        can_connect_to_pypi = True
-    except urllib.error.URLError:
-        print(check_utils.warning("Cannot connect to PiPI to identify package versions to pin."))
-        can_connect_to_pypi = False
+    can_connect_to_pypi = _check_pypy_connection(silent)
 
     # check all requirements files
     requirements_to_fix = {}
@@ -102,6 +97,17 @@ def run(
 
     success = not requirements_to_fix or parsed_args.apply
     return 0 if success else 1
+
+
+def _check_pypy_connection(silent: bool) -> bool:
+    try:
+        urllib.request.urlopen("https://pypi.org/", timeout=1)
+        return True
+    except urllib.error.URLError:
+        if not silent:
+            warning = "Cannot connect to PiPI to identify package versions to pin."
+            print(check_utils.warning(warning))
+        return False
 
 
 def _are_pip_requirements(requirements: List[str]) -> bool:
