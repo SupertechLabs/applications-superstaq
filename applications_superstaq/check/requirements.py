@@ -60,6 +60,15 @@ def run(
         ]
     files = filter(check_utils.inclusion_filter(exclude), files)
 
+    # check that we can connect to PyPI
+    try:
+        urllib.request.urlopen("https://pypi.org/", timeout=1)
+        can_connect_to_pypi = True
+    except urllib.error.URLError:
+        print(check_utils.warning("Cannot connect to PiPI to identify package versions to pin."))
+        can_connect_to_pypi = False
+
+    # check all requirements files
     requirements_to_fix = {}
     for req_file in files:
 
@@ -78,7 +87,7 @@ def run(
         if not is_tidy and not silent:
             print(check_utils.failure(f"{req_file} is not sorted."))
 
-        if not only_sort:
+        if not only_sort and can_connect_to_pypi:
             is_tidy &= _pin_upstream_packages(requirements, upstream_match, silent)
 
         if not is_tidy:
