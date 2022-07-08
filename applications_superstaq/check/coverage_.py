@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
-import re
 import subprocess
 import sys
 import textwrap
-from typing import Iterable, List, Optional, Union
+from typing import Iterable, Optional, Union
 
 from applications_superstaq.check import check_utils
 
@@ -38,7 +36,7 @@ def run(
         files = check_utils.get_tracked_files(*default_files_to_check, exclude=exclude)
         suppress_warnings = True
 
-    test_files = _get_test_files(*files, exclude=exclude, suppress_warnings=suppress_warnings)
+    test_files = check_utils.get_test_files(*files, exclude=exclude, silent=suppress_warnings)
 
     if test_files:
         include_files = "--include=" + ",".join(files)
@@ -65,31 +63,6 @@ def run(
         print("No test files to check for pytest and coverage.")
 
     return 0
-
-
-def _get_test_files(
-    *files: str, exclude: Optional[Union[str, Iterable[str]]] = None, suppress_warnings: bool
-) -> List[str]:
-    """
-    For the given files, identify all associated test files (i.e. files with the same name, but
-    with a "_test.py" suffix).
-    """
-    should_include = check_utils.inclusion_filter(exclude)
-
-    test_files = set()
-    for file in files:
-        if file.endswith("_test.py"):
-            test_files.add(file)
-
-        else:
-            test_file = re.sub(r"\.py$", "_test.py", file)
-            test_file_exists = os.path.isfile(os.path.join(check_utils.root_dir, test_file))
-            if test_file_exists and should_include(test_file):
-                test_files.add(test_file)
-            elif not suppress_warnings:
-                print(check_utils.warning(f"WARNING: no test file found for {file}"))
-
-    return list(test_files)
 
 
 if __name__ == "__main__":

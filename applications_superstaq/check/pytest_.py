@@ -8,7 +8,7 @@ from typing import Callable, Iterable, Optional, Union
 
 from applications_superstaq.check import check_utils
 
-default_files_to_check = ("*_test.py",)
+default_files_to_check = ("*.py",)
 default_exclude = ("*_integration_test.py",)
 
 
@@ -71,7 +71,10 @@ def run(
         args += ("--disable-socket",)
 
     if files is None:
-        files = check_utils.get_tracked_files(*default_files_to_check, exclude=exclude)
+        tracked_files = check_utils.get_tracked_files(*default_files_to_check, exclude=exclude)
+        files = check_utils.get_test_files(
+            *tracked_files, exclude=exclude, silent=suppress_warnings
+        )
 
     return subprocess.call(["pytest", *args, *files], cwd=check_utils.root_dir)
 

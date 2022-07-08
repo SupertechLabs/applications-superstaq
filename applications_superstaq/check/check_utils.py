@@ -9,6 +9,7 @@ import dataclasses
 import fnmatch
 import inspect
 import os
+import re
 import subprocess
 import sys
 from typing import Any, Callable, Iterable, List, Optional, Union
@@ -168,6 +169,31 @@ def _revision_exists(revision: str) -> bool:
         stderr=subprocess.DEVNULL,
         cwd=root_dir,
     )
+
+
+def get_test_files(
+    *files: str, exclude: Optional[Union[str, Iterable[str]]] = None, silent: bool
+) -> List[str]:
+    """
+    For the given files, identify all associated test files (i.e. files with the same name, but
+    with a "_test.py" suffix).
+    """
+    should_include = inclusion_filter(exclude)
+
+    test_files = set()
+    for file in files:
+        if file.endswith("_test.py"):
+            test_files.add(file)
+
+        else:
+            test_file = re.sub(r"\.py$", "_test.py", file)
+            test_file_exists = os.path.isfile(os.path.join(root_dir, test_file))
+            if test_file_exists and should_include(test_file):
+                test_files.add(test_file)
+            elif not silent:
+                print(warning(f"WARNING: no test file found for {file}"))
+
+    return list(test_files)
 
 
 ####################################################################################################
