@@ -72,9 +72,7 @@ def run(
 
     if files is None:
         tracked_files = check_utils.get_tracked_files(*default_files_to_check, exclude=exclude)
-        files = check_utils.get_test_files(
-            *tracked_files, exclude=exclude, silent=suppress_warnings
-        )
+        files = check_utils.get_test_files(*tracked_files, exclude=exclude, silent=True)
 
     return subprocess.call(["pytest", *args, *files], cwd=check_utils.root_dir)
 
