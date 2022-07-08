@@ -62,11 +62,10 @@ def run(
         if integration_setup:
             integration_setup()
 
-        files_to_add = check_utils.get_tracked_files(
-            "*_integration_test.py",
-            exclude=integration_exclude,
-        )
-        files = list(files) + files_to_add if files else files_to_add
+        if files is None:
+            files = check_utils.get_tracked_files(
+                "*_integration_test.py", exclude=integration_exclude
+            )
 
     elif not parsed_args.enable_socket:
         args += ("--disable-socket",)

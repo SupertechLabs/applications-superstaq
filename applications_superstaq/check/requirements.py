@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import fnmatch
 import functools
 import glob
 import json
@@ -24,7 +25,7 @@ def run(
     files: Optional[Iterable[str]] = None,
     parser: argparse.ArgumentParser = check_utils.get_file_parser(add_files=False),
     exclude: Optional[Union[str, Iterable[str]]] = None,
-    upstream_match: str = ".*superstaq",
+    upstream_match: str = "*superstaq",
     silent: bool = False,
     only_sort: bool = False,
 ) -> int:
@@ -149,7 +150,7 @@ def _pin_upstream_packages(requirements: List[str], upstream_match: str, silent:
     upstream_versions = {
         package: _get_latest_version(package)
         for requirement in requirements
-        if re.match(upstream_match, package := re.split(">|<|~|=", requirement)[0])
+        if fnmatch.fnmatch(package := re.split(">|<|~|=", requirement)[0], upstream_match)
     }
 
     # pin upstream packages to their latest versions
