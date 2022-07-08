@@ -11,6 +11,7 @@ from applications_superstaq.check import check_utils
 default_files_to_check = ("*.py",)
 default_exclude = ("*_integration_test.py",)
 
+
 @check_utils.enable_exit_on_failure
 @check_utils.extract_file_args
 @check_utils.enable_incremental(*default_files_to_check, exclude=default_exclude)
