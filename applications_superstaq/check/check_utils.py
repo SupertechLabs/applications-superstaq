@@ -285,21 +285,3 @@ def enable_exit_on_failure(func: Callable[..., int]) -> Callable[..., int]:
         return returncode
 
     return func_with_exit
-
-
-def extract_file_args(func: Callable[..., int]) -> Callable[..., int]:
-    """Decorator to extract files from the arguments to a function."""
-
-    def func_with_files(*args: str, files: Optional[Iterable[str]] = None, **kwargs: Any) -> int:
-        file_args = []
-        for idx, arg in enumerate(args):
-            if arg[0] != "-":
-                file_args.append(arg)
-            else:
-                args = args[idx:]
-                break
-        if file_args:
-            files = list(files) + file_args if files else file_args
-        return func(*args, files=files, **kwargs)
-
-    return func_with_files
