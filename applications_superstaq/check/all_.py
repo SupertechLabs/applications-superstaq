@@ -47,7 +47,7 @@ def run(*args: str, parser: argparse.ArgumentParser = check_utils.get_file_parse
         action="extend",
         help="Run checks in incremental mode.",
     )
-    parsed_args = parser.parse_args(args)
+    parsed_args = parser.parse_intermixed_args(args)
     files = parsed_args.files
     revisions = parsed_args.revisions
 

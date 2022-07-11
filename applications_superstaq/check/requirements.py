@@ -47,7 +47,7 @@ def run(
         action="store_true",
         help="Only sort requirements files.  Do not check upstream package versions.",
     )
-    parsed_args = parser.parse_args(args)
+    parsed_args = parser.parse_intermixed_args(args)
     files = parsed_args.files
 
     if not files:
