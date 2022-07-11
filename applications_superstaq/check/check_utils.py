@@ -200,13 +200,12 @@ def get_test_files(
 # decorators to add features to checks
 
 
-def get_file_parser(add_files: bool = True, add_help: bool = True) -> argparse.ArgumentParser:
+def get_file_parser(add_help: bool = True) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         add_help=add_help, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    if add_files:
-        files_help_text = "The files to check. If not passed any files, inspects the entire repo."
-        parser.add_argument("files", nargs="*", help=files_help_text)
+    files_help_text = "The files to check. If not passed any files, inspects the entire repo."
+    parser.add_argument("files", nargs="*", help=files_help_text)
     return parser
 
 

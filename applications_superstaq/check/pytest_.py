@@ -18,10 +18,10 @@ default_exclude = ("*_integration_test.py",)
 def run(
     *args: str,
     files: Optional[Iterable[str]] = None,
-    parser: argparse.ArgumentParser = check_utils.get_file_parser(),
     exclude: Optional[Union[str, Iterable[str]]] = default_exclude,
     integration_exclude: Optional[Union[str, Iterable[str]]] = "dev_tools/*",
     integration_setup: Optional[Callable] = None,
+    parser: argparse.ArgumentParser = check_utils.get_file_parser(),
 ) -> int:
 
     parser.description = textwrap.dedent(

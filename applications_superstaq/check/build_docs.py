@@ -10,10 +10,9 @@ from applications_superstaq.check import check_utils
 
 
 @check_utils.enable_exit_on_failure
-def run(
-    *args: str, parser: argparse.ArgumentParser = check_utils.get_file_parser(add_files=False)
-) -> int:
+def run(*args: str) -> int:
 
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.description = textwrap.dedent(
         """
         Checks that the docs build successfully.

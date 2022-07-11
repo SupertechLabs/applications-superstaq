@@ -23,11 +23,11 @@ from applications_superstaq.check import check_utils
 def run(
     *args: str,
     files: Optional[Iterable[str]] = None,
-    parser: argparse.ArgumentParser = check_utils.get_file_parser(add_files=False),
     exclude: Optional[Union[str, Iterable[str]]] = None,
-    upstream_match: str = "*superstaq",
     silent: bool = False,
     only_sort: bool = False,
+    upstream_match: str = "*superstaq",
+    parser: argparse.ArgumentParser = check_utils.get_file_parser(),
 ) -> int:
 
     parser.description = textwrap.dedent(
