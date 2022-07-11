@@ -13,11 +13,9 @@ default_exclude = ("*_integration_test.py",)
 
 
 @check_utils.enable_exit_on_failure
-@check_utils.extract_file_args
 @check_utils.enable_incremental(*default_files_to_check, exclude=default_exclude)
 def run(
     *args: str,
-    files: Optional[Iterable[str]] = None,
     exclude: Optional[Union[str, Iterable[str]]] = default_exclude,
     suppress_warnings: bool = False,
     parser: argparse.ArgumentParser = check_utils.get_file_parser(),
@@ -30,9 +28,11 @@ def run(
         Ignores integration tests and files in the [repo_root]/examples directory.
         """
     )
-    parser.parse_args(args)
 
-    if files is None:
+    parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
+    files = parsed_args.files
+
+    if not files:
         files = check_utils.get_tracked_files(*default_files_to_check, exclude=exclude)
         suppress_warnings = True
 
@@ -41,7 +41,7 @@ def run(
     if test_files:
         include_files = "--include=" + ",".join(files)
         test_returncode = subprocess.call(
-            ["coverage", "run", *args, include_files, "-m", "pytest", *test_files],
+            ["coverage", "run", include_files, *args_to_pass, "-m", "pytest", *test_files],
             cwd=check_utils.root_dir,
         )
 

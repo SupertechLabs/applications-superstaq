@@ -13,11 +13,9 @@ default_exclude = ("*_integration_test.py",)
 
 
 @check_utils.enable_exit_on_failure
-@check_utils.extract_file_args
 @check_utils.enable_incremental(*default_files_to_check, exclude=default_exclude)
 def run(
     *args: str,
-    files: Optional[Iterable[str]] = None,
     exclude: Optional[Union[str, Iterable[str]]] = default_exclude,
     integration_exclude: Optional[Union[str, Iterable[str]]] = "dev_tools/*",
     integration_setup: Optional[Callable] = None,
@@ -51,30 +49,30 @@ def run(
         + "Enabled automatically if running in integration mode.",
     )
 
-    parsed_args, unknown_args = parser.parse_known_intermixed_args(args)
-    args = tuple(unknown_args)
+    parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
+    files = parsed_args.files
 
     if parsed_args.notebook:
-        args += ("--nbmake",)
+        args_to_pass += ("--nbmake",)
         files = check_utils.get_tracked_files("**/*.ipynb", exclude=exclude)
 
     if parsed_args.integration:
         if integration_setup:
             integration_setup()
 
-        if files is None:
+        if not files:
             files = check_utils.get_tracked_files(
                 "*_integration_test.py", exclude=integration_exclude
             )
 
     elif not parsed_args.enable_socket:
-        args += ("--disable-socket",)
+        args_to_pass += ("--disable-socket",)
 
-    if files is None:
+    if not files:
         tracked_files = check_utils.get_tracked_files(*default_files_to_check, exclude=exclude)
         files = check_utils.get_test_files(*tracked_files, exclude=exclude, silent=True)
 
-    return subprocess.call(["pytest", *args, *files], cwd=check_utils.root_dir)
+    return subprocess.call(["pytest", *files, *args_to_pass], cwd=check_utils.root_dir)
 
 
 if __name__ == "__main__":

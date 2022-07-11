@@ -92,7 +92,7 @@ def inclusion_filter(exclude: Optional[Union[str, Iterable[str]]]) -> Callable[[
 
 def get_changed_files(
     match_patterns: Iterable[str],
-    revisions: Iterable[str],
+    revisions: Optional[Iterable[str]],
     silent: bool = False,
     exclude: Optional[Union[str, Iterable[str]]] = None,
 ) -> List[str]:
@@ -106,7 +106,10 @@ def get_changed_files(
     the first of the default_branches (specified above) that it finds.  If none of these branches
     exists, this method raises a ValueError.
     """
-    revisions = list(revisions)
+    if not revisions:
+        revisions = []
+    else:
+        revisions = list(revisions)
 
     # verify that all arguments are valid revisions
     invalid_revisions = [revision for revision in revisions if not _revision_exists(revision)]
@@ -227,7 +230,6 @@ def enable_incremental(
 
         def incremental_func(
             *args: Any,
-            files: Optional[Iterable[str]] = None,
             revisions: Optional[Iterable[str]] = None,
             **kwargs: Any,
         ) -> int:
@@ -257,18 +259,14 @@ def enable_incremental(
                 inc_parser = argparse.ArgumentParser(add_help=not func_has_parser)
                 _add_incremental_arg(inc_parser)
                 inc_parsed_args, unknown_args = inc_parser.parse_known_intermixed_args(args)
-                args = tuple(unknown_args)
                 revisions = inc_parsed_args.revisions
+                args = tuple(unknown_args)
 
             if revisions is not None:
-                # add files that have changed since the most recent common ancestor of the revisions
-                changed_files = get_changed_files(
-                    match_patterns, revisions, silent=silent, exclude=exclude
-                )
-                if changed_files:
-                    files = list(files) + changed_files if files else changed_files
-
-            return func(*args, files=files, **kwargs)
+                files = get_changed_files(match_patterns, revisions, silent=silent, exclude=exclude)
+                return func(*files, *args, **kwargs)
+            else:
+                return func(*args, **kwargs)
 
         return incremental_func
 

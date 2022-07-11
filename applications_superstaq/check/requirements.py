@@ -19,13 +19,10 @@ from applications_superstaq.check import check_utils
 
 
 @check_utils.enable_exit_on_failure
-@check_utils.extract_file_args
 def run(
     *args: str,
-    files: Optional[Iterable[str]] = None,
     exclude: Optional[Union[str, Iterable[str]]] = None,
     silent: bool = False,
-    only_sort: bool = False,
     upstream_match: str = "*superstaq",
     parser: argparse.ArgumentParser = check_utils.get_file_parser(),
 ) -> int:
@@ -51,9 +48,9 @@ def run(
         help="Only sort requirements files.  Do not check upstream package versions.",
     )
     parsed_args = parser.parse_args(args)
-    only_sort |= parsed_args.only_sort
+    files = parsed_args.files
 
-    if files is None:
+    if not files:
         req_file_match = os.path.join(check_utils.root_dir, "**", "*requirements.txt")
         files = [
             os.path.relpath(file, check_utils.root_dir)
@@ -83,7 +80,7 @@ def run(
         if not is_tidy and not silent:
             print(check_utils.failure(f"{req_file} is not sorted."))
 
-        if not only_sort and can_connect_to_pypi:
+        if not parsed_args.only_sort and can_connect_to_pypi:
             is_tidy &= _pin_upstream_packages(requirements, upstream_match, silent)
 
         if not is_tidy:

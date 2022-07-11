@@ -3,7 +3,6 @@
 import argparse
 import sys
 import textwrap
-from typing import Iterable, Optional
 
 from applications_superstaq.check import (
     build_docs,
@@ -17,12 +16,7 @@ from applications_superstaq.check import (
 )
 
 
-@check_utils.extract_file_args
-def run(
-    *args: str,
-    files: Optional[Iterable[str]] = None,
-    parser: argparse.ArgumentParser = check_utils.get_file_parser()
-) -> int:
+def run(*args: str, parser: argparse.ArgumentParser = check_utils.get_file_parser()) -> int:
 
     parser.description = textwrap.dedent(
         """
@@ -53,7 +47,8 @@ def run(
         action="extend",
         help="Run checks in incremental mode.",
     )
-    parsed_args = parser.parse_intermixed_args(args)
+    parsed_args = parser.parse_args(args)
+    files = parsed_args.files
     revisions = parsed_args.revisions
 
     default_mode = not files and revisions is None
@@ -61,11 +56,11 @@ def run(
 
     # run formatting checks
     exit_on_failure = not (parsed_args.force_formats or parsed_args.force_all)
-    checks_failed |= format_.run(files=files, revisions=revisions, exit_on_failure=exit_on_failure)
-    checks_failed |= flake8_.run(files=files, revisions=revisions, exit_on_failure=exit_on_failure)
+    checks_failed |= format_.run(*files, revisions=revisions, exit_on_failure=exit_on_failure)
+    checks_failed |= flake8_.run(*files, revisions=revisions, exit_on_failure=exit_on_failure)
     # pylint is slow, so always run pylint in incremental mode
     checks_failed |= pylint_.run(
-        files=files,
+        *files,
         revisions=[] if default_mode else revisions,
         exit_on_failure=exit_on_failure,
     )
@@ -75,7 +70,7 @@ def run(
     # typing changes are likely to have side effects, so always run mypy on the entire repo
     checks_failed |= mypy_.run(revisions=revisions, exit_on_failure=exit_on_failure)
     checks_failed |= coverage_.run(
-        files=files,
+        *files,
         revisions=revisions,
         exit_on_failure=exit_on_failure,
         suppress_warnings=default_mode,

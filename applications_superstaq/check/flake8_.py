@@ -12,7 +12,6 @@ default_files_to_check = ("*.py",)
 
 
 @check_utils.enable_exit_on_failure
-@check_utils.extract_file_args
 @check_utils.enable_incremental(*default_files_to_check)
 def run(
     *args: str,
@@ -25,12 +24,14 @@ def run(
         Runs flake8 on the repository (formatting check).
         """
     )
-    parser.parse_args(args)
 
-    if files is None:
+    parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
+    files = parsed_args.files
+
+    if not files:
         files = check_utils.get_tracked_files(*default_files_to_check)
 
-    return subprocess.call(["flake8", *args, *files], cwd=check_utils.root_dir)
+    return subprocess.call(["flake8", *files, *args_to_pass], cwd=check_utils.root_dir)
 
 
 if __name__ == "__main__":

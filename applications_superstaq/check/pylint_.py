@@ -25,12 +25,14 @@ def run(
         Runs pylint on the repository (formatting check).
         """
     )
-    parser.parse_args(args)
 
-    if files is None:
+    parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
+    files = parsed_args.files
+
+    if not files:
         files = check_utils.get_tracked_files(*default_files_to_check)
 
-    return subprocess.call(["pylint", *args, *files], cwd=check_utils.root_dir)
+    return subprocess.call(["pylint", *files, *args_to_pass], cwd=check_utils.root_dir)
 
 
 if __name__ == "__main__":

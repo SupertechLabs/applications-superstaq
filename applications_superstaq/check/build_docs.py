@@ -18,7 +18,7 @@ def run(*args: str) -> int:
         Checks that the docs build successfully.
         """
     )
-    parser.parse_args(args)
+    parser.parse_known_args(args)
 
     docs_dir = os.path.join(check_utils.root_dir, "docs")
     if os.path.isdir(docs_dir):
