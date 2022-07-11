@@ -12,7 +12,6 @@ default_files_to_check = ("*.py",)
 
 
 @check_utils.enable_exit_on_failure
-@check_utils.extract_file_args
 @check_utils.enable_incremental(*default_files_to_check)
 def run(
     *args: str,
