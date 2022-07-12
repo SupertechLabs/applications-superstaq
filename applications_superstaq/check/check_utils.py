@@ -197,10 +197,8 @@ def get_test_files(*files: str, exclude: Union[str, Iterable[str]] = "", silent:
 # file parsing, incremental checks, and decorator to exit instead of returning a failing exit code
 
 
-def get_file_parser(add_help: bool = True) -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        add_help=add_help, formatter_class=argparse.RawDescriptionHelpFormatter
-    )
+def get_file_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
 
     help_text = "The files to check. If not passed any files, inspects the entire repo."
     parser.add_argument("files", nargs="*", help=help_text)
