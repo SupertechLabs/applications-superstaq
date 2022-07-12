@@ -143,17 +143,6 @@ def _get_ancestor(*revisions: str, silent: bool = False) -> str:
     """
     Helper function to identify the most recent common ancestor of the given git revisions.
     """
-    print()
-    print()
-    print()
-    print()
-    print("revisions:", revisions)
-    print("cwd:", os.getcwd())
-    print("root_dir:", root_dir)
-    print()
-    print()
-    print()
-    print()
     if len(revisions) == 1:
         return revisions[0]
 
@@ -167,7 +156,6 @@ def _get_ancestor(*revisions: str, silent: bool = False) -> str:
         for branch in default_branches:
             if _revision_exists(branch):
                 return branch
-
         error = f"Default git revisions not found: {default_branches}"
         raise RuntimeError(failure(error))
 
