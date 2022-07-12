@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
-import argparse
 import fnmatch
 import functools
-import glob
 import json
 import os
 import re
@@ -11,7 +9,7 @@ import subprocess
 import sys
 import textwrap
 import urllib.request
-from typing import Dict, Iterable, List, Optional, Tuple, Union
+from typing import Dict, Iterable, List, Tuple, Union
 
 import pkg_resources
 
@@ -21,14 +19,13 @@ from applications_superstaq.check import check_utils
 @check_utils.enable_exit_on_failure
 def run(
     *args: str,
-    exclude: Optional[Union[str, Iterable[str]]] = None,
-    silent: bool = False,
+    include: Union[str, Iterable[str]] = "*requirements.txt",
+    exclude: Union[str, Iterable[str]] = "",
     upstream_match: str = "*superstaq",
-    parser: Optional[argparse.ArgumentParser] = None,
+    silent: bool = False,
 ) -> int:
-    if not parser:
-        parser = check_utils.get_file_parser()
 
+    parser = check_utils.get_file_parser()
     parser.description = textwrap.dedent(
         """
         Checks that:
@@ -50,15 +47,7 @@ def run(
         help="Only sort requirements files.  Do not check upstream package versions.",
     )
     parsed_args = parser.parse_intermixed_args(args)
-    files = parsed_args.files
-
-    if not files:
-        req_file_match = os.path.join(check_utils.root_dir, "**", "*requirements.txt")
-        files = [
-            os.path.relpath(file, check_utils.root_dir)
-            for file in glob.iglob(req_file_match, recursive=True)
-        ]
-    files = filter(check_utils.inclusion_filter(exclude), files)
+    files = check_utils.get_file_args(parsed_args, include, exclude, silent)
 
     # check that we can connect to PyPI
     can_connect_to_pypi = _check_pypy_connection(silent)

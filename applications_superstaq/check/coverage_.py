@@ -1,28 +1,22 @@
 #!/usr/bin/env python3
 
-import argparse
 import subprocess
 import sys
 import textwrap
-from typing import Iterable, Optional, Union
+from typing import Iterable, Union
 
 from applications_superstaq.check import check_utils
 
-default_files_to_check = ("*.py",)
-default_exclude = ("*_integration_test.py",)
-
 
 @check_utils.enable_exit_on_failure
-@check_utils.enable_incremental(*default_files_to_check, exclude=default_exclude)
 def run(
     *args: str,
-    exclude: Optional[Union[str, Iterable[str]]] = default_exclude,
-    suppress_warnings: bool = False,
-    parser: Optional[argparse.ArgumentParser] = None,
+    include: Union[str, Iterable[str]] = "*.py",
+    exclude: Union[str, Iterable[str]] = "*_integration_test.py",
+    silent: bool = False,
 ) -> int:
-    if not parser:
-        parser = check_utils.get_file_parser()
 
+    parser = check_utils.get_file_parser()
     parser.description = textwrap.dedent(
         """
         Checks to make sure that all code is covered by unit tests.
@@ -32,13 +26,10 @@ def run(
     )
 
     parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
-    files = parsed_args.files
+    files = check_utils.get_file_args(parsed_args, include, exclude, silent)
 
-    if not files:
-        files = check_utils.get_tracked_files(*default_files_to_check, exclude=exclude)
-        suppress_warnings = True
-
-    test_files = check_utils.get_test_files(*files, exclude=exclude, silent=suppress_warnings)
+    silent = silent or not (parsed_args.files or parsed_args.revisions)
+    test_files = check_utils.get_test_files(*files, exclude=exclude, silent=silent)
 
     if test_files:
         include_files = "--include=" + ",".join(files)
