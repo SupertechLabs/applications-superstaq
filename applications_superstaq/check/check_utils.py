@@ -223,7 +223,10 @@ def enable_incremental(
     """
 
     def incremental_decorator(func: Callable[..., int]) -> Callable[..., int]:
-        """Inner decorator that uses match_patterns."""
+        """
+        Inner decorator that uses the match_patterns and exclude arguments that were passed to the
+        outer decorator.
+        """
 
         def incremental_func(
             *args: Any,
