@@ -22,6 +22,7 @@ def run(
         """
         Runs pytest on the repository.
         By default, checks only *_test.py files, ignoring *_integration_test.py files.
+        Also passes --disable-socket to pytest, unless running with --integration or --enable-socket.
         """
     )
 
@@ -38,12 +39,7 @@ def run(
         help="Run pytest on *_integration_test.py files, ignoring dev_tools/*.",
     )
 
-    parser.add_argument(
-        "--enable-socket",
-        action="store_true",
-        help="Force-enable socket (i.e. do not pass --disable-socket to pytest). "
-        + "Enabled automatically if running in integration mode.",
-    )
+    parser.add_argument("--enable-socket", action="store_true", help="Force-enable socket.")
 
     parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
     include, exclude = _get_file_search_options(
