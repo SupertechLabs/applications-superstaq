@@ -19,8 +19,10 @@ def run(
     exclude: Optional[Union[str, Iterable[str]]] = default_exclude,
     integration_exclude: Optional[Union[str, Iterable[str]]] = "dev_tools/*",
     integration_setup: Optional[Callable] = None,
-    parser: argparse.ArgumentParser = check_utils.get_file_parser(),
+    parser: Optional[argparse.ArgumentParser] = None,
 ) -> int:
+    if not parser:
+        parser = check_utils.get_file_parser()
 
     parser.description = textwrap.dedent(
         """

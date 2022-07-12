@@ -24,8 +24,10 @@ def run(
     exclude: Optional[Union[str, Iterable[str]]] = None,
     silent: bool = False,
     upstream_match: str = "*superstaq",
-    parser: argparse.ArgumentParser = check_utils.get_file_parser(),
+    parser: Optional[argparse.ArgumentParser] = None,
 ) -> int:
+    if not parser:
+        parser = check_utils.get_file_parser()
 
     parser.description = textwrap.dedent(
         """

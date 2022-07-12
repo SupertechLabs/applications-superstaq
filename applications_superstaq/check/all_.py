@@ -3,6 +3,7 @@
 import argparse
 import sys
 import textwrap
+from typing import Optional
 
 from applications_superstaq.check import (
     build_docs,
@@ -16,7 +17,12 @@ from applications_superstaq.check import (
 )
 
 
-def run(*args: str, parser: argparse.ArgumentParser = check_utils.get_file_parser()) -> int:
+def run(
+    *args: str,
+    parser: Optional[argparse.ArgumentParser] = None,
+) -> int:
+    if not parser:
+        parser = check_utils.get_file_parser()
 
     parser.description = textwrap.dedent(
         """

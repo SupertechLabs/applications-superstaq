@@ -16,8 +16,10 @@ default_files_to_check = ("*.py",)
 def run(
     *args: str,
     files: Optional[Iterable[str]] = None,
-    parser: argparse.ArgumentParser = check_utils.get_file_parser(),
+    parser: Optional[argparse.ArgumentParser] = None,
 ) -> int:
+    if not parser:
+        parser = check_utils.get_file_parser()
 
     parser.description = textwrap.dedent(
         """

@@ -4,6 +4,7 @@ import argparse
 import subprocess
 import sys
 import textwrap
+from typing import Optional
 
 from applications_superstaq.check import check_utils
 
@@ -14,8 +15,10 @@ default_files_to_check = ("*.py",)
 @check_utils.enable_incremental(*default_files_to_check)
 def run(
     *args: str,
-    parser: argparse.ArgumentParser = check_utils.get_file_parser(),
+    parser: Optional[argparse.ArgumentParser] = None,
 ) -> int:
+    if not parser:
+        parser = check_utils.get_file_parser()
 
     parser.description = textwrap.dedent(
         """
