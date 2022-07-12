@@ -18,7 +18,7 @@ def run(*args: str) -> int:
         Checks that the docs build successfully.
         """
     )
-    parser.parse_args(args)  # "dummy" parsing to print help text
+    parser.parse_args(args)  # placeholder parsing to enable printing help text
 
     docs_dir = os.path.join(check_utils.root_dir, "docs")
     if os.path.isdir(docs_dir):

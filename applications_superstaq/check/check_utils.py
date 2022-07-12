@@ -92,7 +92,7 @@ def inclusion_filter(exclude: Optional[Union[str, Iterable[str]]]) -> Callable[[
 
 def get_changed_files(
     match_patterns: Iterable[str],
-    revisions: Optional[Iterable[str]],
+    revisions: Iterable[str],
     silent: bool = False,
     exclude: Optional[Union[str, Iterable[str]]] = None,
 ) -> List[str]:
@@ -106,10 +106,7 @@ def get_changed_files(
     the first of the default_branches (specified above) that it finds.  If none of these branches
     exists, this method raises a ValueError.
     """
-    if not revisions:
-        revisions = []
-    else:
-        revisions = list(revisions)
+    revisions = list(revisions)
 
     # verify that all arguments are valid revisions
     invalid_revisions = [revision for revision in revisions if not _revision_exists(revision)]
@@ -235,38 +232,44 @@ def enable_incremental(
         ) -> int:
             silent = revisions is not None  # if passed revisions explicitly, run in silent mode
 
-            _help = (
+            help_text = (
                 "Run an incremental check on files that have changed since a specified revision.  "
                 + f"If no revisions are specified, compare against the first of {default_branches} "
                 + "that exists.  If multiple revisions are provided, this script compares against "
                 + "their most recent common ancestor.  Incremental checks ignore integration tests."
             )
 
-            def _add_incremental_arg(parser: argparse.ArgumentParser) -> None:
+            def add_incremental_arg(parser: argparse.ArgumentParser) -> None:
                 parser.add_argument(
-                    "-i", "--incremental", dest="revisions", nargs="*", action="extend", help=_help
+                    "-i",
+                    "--incremental",
+                    dest="revisions",
+                    nargs="*",
+                    action="extend",
+                    help=help_text,
                 )
 
             # add incremental flags to the parser of func (so that they appear in the help text)
             func_has_parser = "parser" in inspect.signature(func).parameters
             if func_has_parser:
                 parser = kwargs.get("parser", get_file_parser())
-                _add_incremental_arg(parser)
+                add_incremental_arg(parser)
                 kwargs["parser"] = parser
 
             if revisions is None:
                 # parse arguments to identify revisions to compare against
                 inc_parser = argparse.ArgumentParser(add_help=not func_has_parser)
-                _add_incremental_arg(inc_parser)
-                inc_parsed_args, unknown_args = inc_parser.parse_known_intermixed_args(args)
+                add_incremental_arg(inc_parser)
+                inc_parsed_args, args_to_pass = inc_parser.parse_known_args(args)
                 revisions = inc_parsed_args.revisions
-                args = tuple(unknown_args)
-
-            if revisions is not None:
-                files = get_changed_files(match_patterns, revisions, silent=silent, exclude=exclude)
-                return func(*files, *args, **kwargs)
             else:
-                return func(*args, **kwargs)
+                args_to_pass = []
+
+            if revisions is None:
+                return func(*args_to_pass, **kwargs)
+            else:
+                files = get_changed_files(match_patterns, revisions, silent=silent, exclude=exclude)
+                return func(*files, *args_to_pass, **kwargs)
 
         return incremental_func
 
