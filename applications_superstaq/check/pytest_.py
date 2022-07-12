@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
+import argparse
 import subprocess
 import sys
 import textwrap
-from typing import Callable, Iterable, Optional, Union
+from typing import Callable, Iterable, Optional, Tuple, Union
 
 from applications_superstaq.check import check_utils
 
@@ -11,12 +12,8 @@ from applications_superstaq.check import check_utils
 @check_utils.enable_exit_on_failure
 def run(
     *args: str,
-    include: Union[str, Iterable[str]] = "*_test.py",
-    exclude: Union[str, Iterable[str]] = "*_integration_test.py",
-    notebook_include: Union[str, Iterable[str]] = "*.ipynb",
-    notebook_exclude: Union[str, Iterable[str]] = "",
-    integration_include: Union[str, Iterable[str]] = "*_integration_test.py",
-    integration_exclude: Union[str, Iterable[str]] = "dev_tools/*",
+    include: Optional[Union[str, Iterable[str]]] = None,
+    exclude: Optional[Union[str, Iterable[str]]] = None,
     integration_setup: Optional[Callable] = None,
     silent: bool = False,
 ) -> int:
@@ -50,24 +47,47 @@ def run(
     )
 
     parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
+    include, exclude = _get_file_search_options(parsed_args, include, exclude)
+    files = check_utils.get_file_args(parsed_args, include, exclude, silent)
 
     if parsed_args.notebook:
         args_to_pass += ["--nbmake"]
-        include = notebook_include
-        exclude = notebook_exclude
-
-    elif parsed_args.integration:
-        if integration_setup:
-            integration_setup()
-        include = integration_include
-        exclude = integration_exclude
-
-    files = check_utils.get_file_args(parsed_args, include, exclude, silent)
 
     if not parsed_args.integration and not parsed_args.enable_socket:
         args_to_pass += ["--disable-socket"]
 
+    if parsed_args.integration and integration_setup:
+        integration_setup()
+
     return subprocess.call(["pytest", *files, *args_to_pass], cwd=check_utils.root_dir)
+
+
+def _get_file_search_options(
+    parsed_args: argparse.Namespace,
+    include: Optional[Union[str, Iterable[str]]],
+    exclude: Optional[Union[str, Iterable[str]]],
+) -> Tuple[Union[str, Iterable[str]], Union[str, Iterable[str]]]:
+    """If either of the include/exclude options are None, set them to reasonable defaults."""
+
+    if parsed_args.notebook:
+        if include is None:
+            include = "*.ipynb"
+        if exclude is None:
+            exclude = ""
+
+    elif parsed_args.integration:
+        if include is None:
+            include = "*_integration_test.py"
+        if exclude is None:
+            exclude = "dev_tools/*"
+
+    else:
+        if include is None:
+            include = "*_test.py"
+        if exclude is None:
+            exclude = "*_integration_test.py"
+
+    return include, exclude
 
 
 if __name__ == "__main__":
