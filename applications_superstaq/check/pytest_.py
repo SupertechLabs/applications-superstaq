@@ -21,7 +21,7 @@ def run(
     parser.description = textwrap.dedent(
         """
         Runs pytest on the repository.
-        Ignores integration tests unless running in integration mode.
+        By default, checks only *_test.py files, ignoring *_integration_test.py files.
         """
     )
 
@@ -30,12 +30,12 @@ def run(
     exclusive_group.add_argument(
         "--notebook",
         action="store_true",
-        help="Run pytest on all *.ipynb files in the repository.",
+        help="Run pytest on *.ipynb files.",
     )
     exclusive_group.add_argument(
         "--integration",
         action="store_true",
-        help="Run pytest on all *integration_test.py files in the repository.",
+        help="Run pytest on *_integration_test.py files, ignoring dev_tools/*.",
     )
 
     parser.add_argument(
