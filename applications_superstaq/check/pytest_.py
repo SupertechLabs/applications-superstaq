@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import argparse
 import subprocess
 import sys
 import textwrap
@@ -47,7 +46,9 @@ def run(
     )
 
     parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
-    include, exclude = _get_file_search_options(parsed_args, include, exclude)
+    include, exclude = _get_file_search_options(
+        parsed_args.notebook, parsed_args.integration, include, exclude
+    )
     files = check_utils.get_file_args(parsed_args, include, exclude, silent)
 
     if parsed_args.notebook:
@@ -63,19 +64,20 @@ def run(
 
 
 def _get_file_search_options(
-    parsed_args: argparse.Namespace,
+    notebook_mode: bool,
+    integration_mode: bool,
     include: Optional[Union[str, Iterable[str]]],
     exclude: Optional[Union[str, Iterable[str]]],
 ) -> Tuple[Union[str, Iterable[str]], Union[str, Iterable[str]]]:
     """If either of the include/exclude options are None, set them to reasonable defaults."""
 
-    if parsed_args.notebook:
+    if notebook_mode:
         if include is None:
             include = "*.ipynb"
         if exclude is None:
             exclude = ""
 
-    elif parsed_args.integration:
+    elif integration_mode:
         if include is None:
             include = "*_integration_test.py"
         if exclude is None:
