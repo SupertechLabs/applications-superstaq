@@ -49,6 +49,8 @@ def run(*args: str) -> int:
     checks_failed = 0
 
     # run formatting checks
+    # silence all but the first check to avoid printing duplicate info about incrmental files
+    # silencing does not affect warnings and errors
     exit_on_failure = not (parsed_args.force_formats or parsed_args.force_all)
     checks_failed |= format_.run(*args_to_pass, exit_on_failure=exit_on_failure)
     checks_failed |= flake8_.run(*args_to_pass, exit_on_failure=exit_on_failure, silent=True)
