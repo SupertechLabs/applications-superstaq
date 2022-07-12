@@ -276,13 +276,13 @@ def enable_incremental(
     return incremental_decorator
 
 
-def enable_exit_on_failure(func: Callable[..., int]) -> Callable[..., int]:
+def enable_exit_on_failure(func_with_returncode: Callable[..., int]) -> Callable[..., int]:
     """
     Decorator optionally allowing a function to exit instead of returning a failing return code.
     """
 
     def func_with_exit(*args: Any, exit_on_failure: bool = False, **kwargs: Any) -> int:
-        returncode = func(*args, **kwargs)
+        returncode = func_with_returncode(*args, **kwargs)
         if exit_on_failure and returncode:
             exit(returncode)
         return returncode
