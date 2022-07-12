@@ -93,7 +93,7 @@ def inclusion_filter(exclude: Union[str, Iterable[str]]) -> Callable[[str], bool
 
 def get_changed_files(
     include: Union[str, Iterable[str]],
-    exclude: Union[str, Iterable[str]] = "",
+    exclude: Union[str, Iterable[str]],
     revisions: Optional[Iterable[str]] = None,
     silent: bool = False,
 ) -> List[str]:
@@ -101,13 +101,18 @@ def get_changed_files(
     Get the files of interest that have been changed in the current branch.
     Here "files of interest" means all files identified by get_tracked_files (see above).
 
-    You can optionally specify a git revisions to compare against when determining whether a file is
-    considered to have "changed".  If multiple revisions are provided, this script compares against
-    their most recent common ancestor.  If no revisions are specified, this script will default to
-    the first of the default_branches (specified above) that it finds.  If none of these branches
-    exists, this method raises a ValueError.
+    You can specify git revisions to compare against when determining whether a file is considered
+    to have "changed".  If multiple revisions are provided, this script compares against their most
+    recent common ancestor.
+
+    If an empty list of revisions is specified, this script will default to the first of the
+    default_branches (specified above) that it finds.  If none of these branches exists, this method
+    raises a ValueError.
     """
-    revisions = list(revisions) if revisions else []
+    if revisions is None:
+        return []
+    else:
+        revisions = list(revisions)
 
     # verify that all arguments are valid revisions
     invalid_revisions = [revision for revision in revisions if not _revision_exists(revision)]
@@ -223,7 +228,7 @@ def get_file_args(
     silent: bool = False,
 ) -> List[str]:
     files = parsed_args.files if "files" in parsed_args else []
-    if "revisions" in parsed_args and parsed_args.revisions is not None:
+    if "revisions" in parsed_args:
         files += get_changed_files(include, exclude, parsed_args.revisions, silent=silent)
     return files if files else get_tracked_files(include, exclude)
 
