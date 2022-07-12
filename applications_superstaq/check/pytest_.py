@@ -11,7 +11,7 @@ from applications_superstaq.check import check_utils
 @check_utils.enable_exit_on_failure
 def run(
     *args: str,
-    include: Union[str, Iterable[str]] = "*.py",
+    include: Union[str, Iterable[str]] = "*_test.py",
     exclude: Union[str, Iterable[str]] = "*_integration_test.py",
     notebook_include: Union[str, Iterable[str]] = "*.ipynb",
     notebook_exclude: Union[str, Iterable[str]] = "",
