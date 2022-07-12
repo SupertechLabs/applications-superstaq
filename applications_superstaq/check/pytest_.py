@@ -72,22 +72,21 @@ def _get_file_search_options(
     """If either of the include/exclude options are None, set them to reasonable defaults."""
 
     if notebook_mode:
-        if include is None:
-            include = "*.ipynb"
-        if exclude is None:
-            exclude = ""
+        default_include = "*.ipynb"
+        default_exclude = ""
 
     elif integration_mode:
-        if include is None:
-            include = "*_integration_test.py"
-        if exclude is None:
-            exclude = "dev_tools/*"
+        default_include = "*_integration_test.py"
+        default_exclude = "dev_tools/*"
 
     else:
-        if include is None:
-            include = "*_test.py"
-        if exclude is None:
-            exclude = "*_integration_test.py"
+        default_include = "*_test.py"
+        default_exclude = "*_integration_test.py"
+
+    if not include:
+        include = default_include
+    if not exclude:
+        exclude = default_exclude
 
     return include, exclude
 
