@@ -11,7 +11,7 @@ import subprocess
 import sys
 import textwrap
 import urllib.request
-from typing import Dict, Iterable, List, Optional, Union
+from typing import Dict, Iterable, List, Optional, Tuple, Union
 
 import pkg_resources
 
@@ -66,31 +66,11 @@ def run(
     # check all requirements files
     requirements_to_fix = {}
     for req_file in files:
-
-        with open(os.path.join(check_utils.root_dir, req_file), "r") as file:
-            requirements = file.read().strip().split("\n")
-
-        if not _are_pip_requirements(requirements):
-            error = f"{req_file} not recognized as a pip requirements file."
-            if req_file == "requirements.txt":
-                raise SyntaxError(check_utils.failure(error))
-            elif not silent:
-                print(check_utils.warning(error))
-            continue
-
-        is_tidy = _sort_requirements(requirements)
-        if not is_tidy and not silent:
-            print(check_utils.failure(f"{req_file} is not sorted."))
-
-        if not parsed_args.only_sort and can_connect_to_pypi:
-            is_tidy &= _pin_upstream_packages(requirements, upstream_match, silent)
-
-        if not is_tidy:
+        needs_cleanup, requirements = _inspect_req_file(
+            req_file, parsed_args.only_sort, can_connect_to_pypi, upstream_match, silent
+        )
+        if needs_cleanup:
             requirements_to_fix[req_file] = requirements
-
-        # check whether all requirements for this repo are satisfied
-        if req_file == "requirements.txt" and not silent:
-            _check_requirements(requirements)
 
     # print some helpful text and maybe apply fixes
     _cleanup(requirements_to_fix, parsed_args.apply, silent)
@@ -108,6 +88,31 @@ def _check_pypy_connection(silent: bool) -> bool:
             warning = "Cannot connect to PiPI to identify package versions to pin."
             print(check_utils.warning(warning))
         return False
+
+
+def _inspect_req_file(
+    req_file: str, only_sort: bool, can_connect_to_pypi: bool, upstream_match: str, silent: bool
+) -> Tuple[bool, List[str]]:
+    # read in requirements line-by-line
+    with open(os.path.join(check_utils.root_dir, req_file), "r") as file:
+        requirements = file.read().strip().split("\n")
+
+    if not _are_pip_requirements(requirements):
+        error = f"{req_file} not recognized as a pip requirements file."
+        if req_file == "requirements.txt":
+            raise SyntaxError(check_utils.failure(error))
+        elif not silent:
+            print(check_utils.warning(error))
+        return False, []  # file cannot be cleaned up, and there are no requirements to track
+
+    needs_cleanup, requirements = _sort_requirements(requirements)
+    if needs_cleanup and not silent:
+        print(check_utils.failure(f"{req_file} is not sorted."))
+
+    if not only_sort and can_connect_to_pypi:
+        needs_cleanup |= _pin_upstream_packages(requirements, upstream_match, silent)
+
+    return needs_cleanup, requirements
 
 
 def _are_pip_requirements(requirements: List[str]) -> bool:
@@ -136,12 +141,10 @@ def _are_pip_requirements(requirements: List[str]) -> bool:
     return all(pip_req_format.match(requirement) for requirement in requirements)
 
 
-def _sort_requirements(requirements: List[str]) -> bool:
+def _sort_requirements(requirements: List[str]) -> Tuple[bool, List[str]]:
     sorted_requirements = sorted(requirements, key=str.casefold)
-    is_sorted = requirements == sorted_requirements
-    if not is_sorted:
-        requirements[:] = sorted_requirements
-    return is_sorted
+    needs_cleanup = requirements != sorted_requirements
+    return needs_cleanup, sorted_requirements
 
 
 def _pin_upstream_packages(requirements: List[str], upstream_match: str, silent: bool) -> bool:
@@ -173,7 +176,7 @@ def _pin_upstream_packages(requirements: List[str], upstream_match: str, silent:
                 # print warning if the wrong version of an upstream package is installed locally
                 _inspect_local_version(package, latest_version)
 
-    return up_to_date
+    return not up_to_date
 
 
 @functools.lru_cache
