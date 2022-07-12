@@ -148,6 +148,7 @@ def _get_ancestor(*revisions: str, silent: bool = False) -> str:
     print()
     print()
     print("revisions:", revisions)
+    print("cwd:", os.getcwd())
     print()
     print()
     print()
