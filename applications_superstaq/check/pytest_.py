@@ -83,9 +83,9 @@ def _get_file_search_options(
         default_include = "*_test.py"
         default_exclude = "*_integration_test.py"
 
-    if not include:
+    if include is None:
         include = default_include
-    if not exclude:
+    if exclude is None:
         exclude = default_exclude
 
     return include, exclude
