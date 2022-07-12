@@ -64,12 +64,7 @@ def run(
     exit_on_failure = not (parsed_args.force_formats or parsed_args.force_all)
     checks_failed |= format_.run(*files, revisions=revisions, exit_on_failure=exit_on_failure)
     checks_failed |= flake8_.run(*files, revisions=revisions, exit_on_failure=exit_on_failure)
-    # pylint is slow, so always run pylint in incremental mode
-    checks_failed |= pylint_.run(
-        *files,
-        revisions=[] if default_mode else revisions,
-        exit_on_failure=exit_on_failure,
-    )
+    checks_failed |= pylint_.run(*files, revisions=revisions, exit_on_failure=exit_on_failure)
 
     # run typing and coverage checks
     exit_on_failure = not parsed_args.force_all

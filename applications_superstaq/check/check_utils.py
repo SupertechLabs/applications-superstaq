@@ -92,7 +92,7 @@ def inclusion_filter(exclude: Optional[Union[str, Iterable[str]]]) -> Callable[[
 
 def get_changed_files(
     match_patterns: Iterable[str],
-    revisions: Iterable[str],
+    revisions: Iterable[str] = (),
     silent: bool = False,
     exclude: Optional[Union[str, Iterable[str]]] = None,
 ) -> List[str]:
