@@ -22,7 +22,7 @@ def run(
         """
         Runs pytest on the repository.
         By default, checks only *_test.py files, ignoring *_integration_test.py files.
-        Also passes --disable-socket to pytest, unless running with --integration or --enable-socket.
+        Passes --disable-socket to pytest, unless running with --integration or --enable-socket.
         """
     )
 
