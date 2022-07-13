@@ -34,33 +34,31 @@ def run(
     silent = silent or not (parsed_args.files or parsed_args.revisions)
     test_files = check_utils.get_test_files(*files, exclude=exclude, silent=silent)
 
-    if not parsed_args.enable_socket:
-        args_to_pass += ["--disable-socket"]
-
-    if test_files:
-        include_files = "--include=" + ",".join(files)
-        test_returncode = subprocess.call(
-            ["coverage", "run", include_files, *args_to_pass, "-m", "pytest", *test_files],
-            cwd=check_utils.root_dir,
-        )
-
-        coverage_returncode = subprocess.call(
-            ["coverage", "report", "--precision=2"], cwd=check_utils.root_dir
-        )
-
-        if test_returncode:
-            print(check_utils.failure("TEST FAILURE!"))
-            exit(test_returncode)
-
-        if coverage_returncode:
-            print(check_utils.failure("COVERAGE FAILURE!"))
-            exit(coverage_returncode)
-
-        print(check_utils.success("TEST AND COVERAGE SUCCESS!"))
-
-    else:
+    if not test_files:
         print("No test files to check for pytest and coverage.")
+        return 0
 
+    pytest_args = ["--disable-socket"] if not parsed_args.enable_socket else []
+
+    args_to_pass.append("--include=" + ",".join(files))
+    test_returncode = subprocess.call(
+        ["coverage", "run", *args_to_pass, "-m", "pytest", *test_files, *pytest_args],
+        cwd=check_utils.root_dir,
+    )
+
+    coverage_returncode = subprocess.call(
+        ["coverage", "report", "--precision=2"], cwd=check_utils.root_dir
+    )
+
+    if test_returncode:
+        print(check_utils.failure("TEST FAILURE!"))
+        return test_returncode
+
+    if coverage_returncode:
+        print(check_utils.failure("COVERAGE FAILURE!"))
+        return coverage_returncode
+
+    print(check_utils.success("TEST AND COVERAGE SUCCESS!"))
     return 0
 
 
