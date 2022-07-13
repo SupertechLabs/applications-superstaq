@@ -27,7 +27,7 @@ def run(
     parser.add_argument("--apply", action="store_true", help="Apply changes to files.")
 
     parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
-    files = check_utils.get_file_args(parsed_args, include, exclude, silent)
+    files = check_utils.extract_files(parsed_args, include, exclude, silent)
 
     args_to_pass = ["--color", "--line-length=100"] + args_to_pass
     if not parsed_args.apply:

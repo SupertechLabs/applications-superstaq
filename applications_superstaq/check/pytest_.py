@@ -45,7 +45,7 @@ def run(
     include, exclude = _get_file_search_options(
         parsed_args.notebook, parsed_args.integration, include, exclude
     )
-    files = check_utils.get_file_args(parsed_args, include, exclude, silent)
+    files = check_utils.extract_files(parsed_args, include, exclude, silent)
 
     if parsed_args.notebook:
         args_to_pass += ["--nbmake"]

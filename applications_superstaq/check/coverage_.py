@@ -26,7 +26,7 @@ def run(
     )
 
     parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
-    files = check_utils.get_file_args(parsed_args, include, exclude, silent)
+    files = check_utils.extract_files(parsed_args, include, exclude, silent)
 
     silent = silent or not (parsed_args.files or parsed_args.revisions)
     test_files = check_utils.get_test_files(*files, exclude=exclude, silent=silent)

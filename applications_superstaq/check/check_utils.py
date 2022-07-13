@@ -221,7 +221,7 @@ def get_file_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def get_file_args(
+def extract_files(
     parsed_args: argparse.Namespace,
     include: Union[str, Iterable[str]],
     exclude: Union[str, Iterable[str]] = "",

@@ -47,7 +47,7 @@ def run(
         help="Only sort requirements files.  Do not check upstream package versions.",
     )
     parsed_args = parser.parse_intermixed_args(args)
-    files = check_utils.get_file_args(parsed_args, include, exclude, silent)
+    files = check_utils.extract_files(parsed_args, include, exclude, silent)
 
     # check that we can connect to PyPI
     can_connect_to_pypi = _check_pypy_connection(silent)
