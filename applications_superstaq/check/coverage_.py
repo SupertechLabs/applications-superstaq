@@ -22,14 +22,20 @@ def run(
         Checks to make sure that all code is covered by unit tests.
         Fails if any pytest fails or if coverage is not 100%.
         Ignores integration tests and files in the [repo_root]/examples directory.
+        Passes --disable-socket to coverage, unless running with --enable-socket.
         """
     )
+
+    parser.add_argument("--enable-socket", action="store_true", help="Force-enable socket.")
 
     parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
     files = check_utils.extract_files(parsed_args, include, exclude, silent)
 
     silent = silent or not (parsed_args.files or parsed_args.revisions)
     test_files = check_utils.get_test_files(*files, exclude=exclude, silent=silent)
+
+    if not parsed_args.enable_socket:
+        args_to_pass += ["--disable-socket"]
 
     if test_files:
         include_files = "--include=" + ",".join(files)
