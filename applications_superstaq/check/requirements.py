@@ -217,7 +217,7 @@ def _cleanup(
                 print("Requirements files fixed.")
 
         elif not silent:
-            print(f"Run 'check/requirements.py --apply' to fix requirements files.")
+            print("Run 'check/requirements.py --apply' to fix requirements files.")
 
 
 if __name__ == "__main__":
