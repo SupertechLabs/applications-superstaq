@@ -36,9 +36,7 @@ def test_superstaq_client_str_and_repr() -> None:
         api_key="to_my_heart",
     )
 
-    assert (
-        str(client) == "Client with host=http://example.com/v0.1.0 and name=general-superstaq"
-    )
+    assert str(client) == "Client with host=http://example.com/v0.1.0 and name=general-superstaq"
     assert str(eval(repr(client))) == str(client)
 
 

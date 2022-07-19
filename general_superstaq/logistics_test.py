@@ -18,9 +18,7 @@ def test_read_json_tsp() -> None:
         "map_link": map_link,
         "qubo": gss.qubo.convert_qubo_to_model(qubo_obj),
     }
-    assert gss.logistics.read_json_tsp(
-        json_dict
-    ) == gss.logistics.TSPOutput(
+    assert gss.logistics.read_json_tsp(json_dict) == gss.logistics.TSPOutput(
         route, route_list_numbers, total_distance, map_link, qubo_obj
     )
 
@@ -38,15 +36,13 @@ def test_read_json_warehouse() -> None:
         "open_warehouses": open_warehouses,
         "qubo": gss.qubo.convert_qubo_to_model(qubo_obj),
     }
-    assert gss.logistics.read_json_warehouse(
-        json_dict
-    ) == gss.logistics.WarehouseOutput(
+    assert gss.logistics.read_json_warehouse(json_dict) == gss.logistics.WarehouseOutput(
         warehouse_to_destination, total_distance, map_link, open_warehouses, qubo_obj
     )
 
 
 @mock.patch(
-    "gss.superstaq_client._SuperstaQClient.tsp",
+    "general_superstaq.superstaq_client._SuperstaQClient.tsp",
     return_value={
         "route": ["Chicago", "St Louis", "St Paul", "Chicago"],
         "route_list_numbers": [0, 1, 2, 0],
@@ -72,7 +68,7 @@ def test_service_tsp(mock_tsp: mock.MagicMock) -> None:
 
 
 @mock.patch(
-    "gss.superstaq_client._SuperstaQClient.warehouse",
+    "general_superstaq.superstaq_client._SuperstaQClient.warehouse",
     return_value={
         "warehouse_to_destination": [("Chicago", "Rockford"), ("Chicago", "Aurora")],
         "total_distance": 100.0,

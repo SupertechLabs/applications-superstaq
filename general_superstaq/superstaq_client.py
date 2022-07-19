@@ -280,9 +280,7 @@ class _SuperstaQClient:
                 response.status_code,
             )
         if response.status_code == requests.codes.not_found:
-            raise gss.SuperstaQNotFoundException(
-                "SuperstaQ could not find requested resource."
-            )
+            raise gss.SuperstaQNotFoundException("SuperstaQ could not find requested resource.")
 
         if response.status_code not in self.RETRIABLE_STATUS_CODES:
             if "message" in response.json():

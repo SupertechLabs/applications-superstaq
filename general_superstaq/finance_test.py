@@ -17,9 +17,7 @@ def test_read_json_minvol() -> None:
         "best_std_dev": best_std_dev,
         "qubo": gss.qubo.convert_qubo_to_model(qubo_obj),
     }
-    assert gss.finance.read_json_minvol(
-        json_dict
-    ) == gss.finance.MinVolOutput(
+    assert gss.finance.read_json_minvol(json_dict) == gss.finance.MinVolOutput(
         best_portfolio, best_ret, best_std_dev, qubo_obj
     )
 
@@ -37,15 +35,13 @@ def test_read_json_maxsharpe() -> None:
         "best_sharpe_ratio": best_sharpe_ratio,
         "qubo": gss.qubo.convert_qubo_to_model(qubo_obj),
     }
-    assert gss.finance.read_json_maxsharpe(
-        json_dict
-    ) == gss.finance.MaxSharpeOutput(
+    assert gss.finance.read_json_maxsharpe(json_dict) == gss.finance.MaxSharpeOutput(
         best_portfolio, best_ret, best_std_dev, best_sharpe_ratio, qubo_obj
     )
 
 
 @mock.patch(
-    "gss.superstaq_client._SuperstaQClient.submit_qubo",
+    "general_superstaq.superstaq_client._SuperstaQClient.submit_qubo",
     return_value={
         "solution": gss.converters.serialize(
             np.rec.fromrecords(
@@ -68,7 +64,7 @@ def test_service_submit_qubo(mock_submit_qubo: mock.MagicMock) -> None:
 
 
 @mock.patch(
-    "gss.superstaq_client._SuperstaQClient.find_min_vol_portfolio",
+    "general_superstaq.superstaq_client._SuperstaQClient.find_min_vol_portfolio",
     return_value={
         "best_portfolio": ["AAPL", "GOOG"],
         "best_ret": 8.1,
@@ -87,7 +83,7 @@ def test_service_find_min_vol_portfolio(mock_find_min_vol_portfolio: mock.MagicM
 
 
 @mock.patch(
-    "gss.superstaq_client._SuperstaQClient.find_max_pseudo_sharpe_ratio",
+    "general_superstaq.superstaq_client._SuperstaQClient.find_max_pseudo_sharpe_ratio",
     return_value={
         "best_portfolio": ["AAPL", "GOOG"],
         "best_ret": 8.1,
@@ -104,7 +100,5 @@ def test_service_find_max_pseudo_sharpe_ratio(
     )
     service = gss.finance.Finance(client)
     qubo = {("0",): 123}
-    expected = gss.finance.MaxSharpeOutput(
-        ["AAPL", "GOOG"], 8.1, 10.5, 0.771, qubo
-    )
+    expected = gss.finance.MaxSharpeOutput(["AAPL", "GOOG"], 8.1, 10.5, 0.771, qubo)
     assert service.find_max_pseudo_sharpe_ratio(["AAPL", "GOOG", "IEF", "MMM"], k=0.5) == expected

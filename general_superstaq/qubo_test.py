@@ -12,9 +12,7 @@ def test_read_json_qubo_result() -> None:
     json_dict = {
         "solution": gss.converters.serialize(example_solution),
     }
-    assert repr(gss.qubo.read_json_qubo_result(json_dict)) == repr(
-        example_solution
-    )
+    assert repr(gss.qubo.read_json_qubo_result(json_dict)) == repr(example_solution)
 
 
 def test_convert_qubo_to_model() -> None:
