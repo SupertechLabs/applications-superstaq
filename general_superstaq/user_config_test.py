@@ -22,7 +22,7 @@ def test_service_get_balance() -> None:
 
 
 @mock.patch(
-    "general_superstaq.superstaq_client._SuperstaQClient.ibmq_set_token",
+    "gss.superstaq_client._SuperstaQClient.ibmq_set_token",
     return_value={"status": "Your IBMQ account token has been updated"},
 )
 def test_ibmq_set_token(mock_ibmq: mock.MagicMock) -> None:
@@ -36,7 +36,7 @@ def test_ibmq_set_token(mock_ibmq: mock.MagicMock) -> None:
 
 
 @mock.patch(
-    "general_superstaq.superstaq_client._SuperstaQClient.aqt_upload_configs",
+    "gss.superstaq_client._SuperstaQClient.aqt_upload_configs",
     return_value={"status": "Your AQT configuration has been updated"},
 )
 def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
@@ -60,7 +60,7 @@ def test_service_aqt_upload_configs(mock_aqt_compile: mock.MagicMock) -> None:
 
 
 @mock.patch(
-    "general_superstaq.superstaq_client._SuperstaQClient.aqt_get_configs",
+    "gss.superstaq_client._SuperstaQClient.aqt_get_configs",
     return_value={"pulses": "Hello", "variables": "World"},
 )
 def test_service_aqt_get_configs(mock_aqt_compile: mock.MagicMock) -> None:
