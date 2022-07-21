@@ -32,6 +32,7 @@ def run(
 
     parsed_args.cores = parsed_args.cores[0]
     args_to_pass.append("-j " + str(parsed_args.cores))
+    print("hey it changed on github!")
 
     if parsed_args.all:
         files += check_utils.get_tracked_files(include, exclude)
