@@ -25,7 +25,7 @@ def run(
     )
 
     parser.add_argument("-a", "--all", action="store_true", help="Run pylint on the entire repo.")
-    parser.add_argument("-j", "--cores", type=int, nargs=1, default=[0], help="Number of cores to use for this test.")
+    parser.add_argument("-j", "--cores", type=int, nargs=1, default=[2], help="Number of cores to use for this test.")
 
     parsed_args, args_to_pass = parser.parse_known_intermixed_args(args)
     files = check_utils.extract_files(parsed_args, include, exclude, silent)
