@@ -1,6 +1,5 @@
-from typing import Any, Counter, Dict, List, Mapping, Optional, Sized, TypedDict, TypeVar
+from typing import Any, Counter, Dict, List, Optional, Sized, TypedDict
 
-import cirq
 
 MaxSharpe = TypedDict(
     "MaxSharpe",
@@ -57,7 +56,3 @@ Job = TypedDict(
         "shots": Optional[int],
     },
 )
-
-QubitType = TypeVar("QubitType", cirq.Qid, cirq.LineQubit, cirq.GridQubit, cirq.LineQubit)
-
-QubitMapping = Mapping[QubitType, QubitType]
